@@ -6,5 +6,7 @@ public interface Character // 캐릭터 인터페이스
     int Defense { get; set; }
     string job{get; set;}
     int level{get; set;}
+    int Gold { get; set; }
+    int Mp { get; set; } 
 
 }
