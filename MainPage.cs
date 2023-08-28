@@ -2,6 +2,7 @@ public class MainPage
 {
 	public void GameStart()
 	{
+		Console.Clear();
 		Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
 		Console.WriteLine("이제 전투를 시작하실 수 있습니다.");
 		Console.WriteLine();
@@ -25,12 +26,12 @@ public class MainPage
 				if (inputNumber == 1 || inputNumber == 2)
 					break ;
 			}
-			Console.SetBufferSize(currentCursor.Left, currentCursor.Top);
+			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
 			ConsoleUI.Write(ConsoleColor.Red, "잘못된 입력입니다.");
 			Thread.Sleep(1000);
-			Console.SetBufferSize(currentCursor.Left, currentCursor.Top);
+			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
 			Console.Write("                    ");
-			Console.SetBufferSize(currentCursor.Left, currentCursor.Top);
+			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
 		}
 
 		switch (inputNumber)

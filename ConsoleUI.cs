@@ -4,6 +4,6 @@ public static class ConsoleUI
 	{
 		Console.ForegroundColor = color;
 		Console.Write(str);
-		Console.ResetColor;
+		Console.ResetColor();
 	}
 }
