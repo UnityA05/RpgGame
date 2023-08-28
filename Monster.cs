@@ -1,13 +1,13 @@
 public class Monster : Character
 {
-    public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Health { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Damage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Defense { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public string job { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int level { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Gold { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Mp { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string Name { get; set; }
+    public int Health { get; set; }
+    public int Damage { get; set; }
+    public int Defense { get; set; }
+    public string job { get; set; }
+    public int level { get; set; }
+    public int Gold { get; set; }
+    public int Mp { get; set; }
     public Monster(string name, int health, int damage, int defense, string _job, int _level, int gold, int mp)
     {
         Name = name;
