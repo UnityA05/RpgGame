@@ -1,6 +1,6 @@
 public class Shop
 {
-    public List<Item> shopList = new List<Item>;
+    public List<Item> shopList = new List<Item>();
     public void DisplayShop()
     {
         Console.Clear();
