@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.JavaScript;
 public class Inventory
 {
     List<Item> playerInven { get; set; } = new List<Item>(10);
-    //아래는 인벤토리 리스트에서 각각 무기와 갑옷의 인덱스. 어떻게 고칠지 모르겠다.
+    //아래는 인벤토리 리스트의 장착한 무기와 갑옷의 인덱스 번호. 어떻게 개선하지
     public int exArmorNum = -1;
     public int exWeaponNum = -1;
     Player player = Program.defaultPlayer;
@@ -50,9 +50,9 @@ public class Inventory
             if (playerInven[currentIndex].item_Damage == 0)
             {
                 //armor
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Defence) + 6;
+                int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defence));
+                                                .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
             }
             else
             {
@@ -102,7 +102,7 @@ public class Inventory
         switch (inputNumber)
         {
             case 0:
-                MainPage.GameStart();
+                // MainPage.GameStart();
                 break;
             case 1:
                 DisplayEquip();
@@ -137,9 +137,9 @@ public class Inventory
             if (playerInven[currentIndex].item_Damage == 0)
             {
                 //armor
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Defence) + 6;
+                int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defence));
+                                                .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
             }
             else
             {
@@ -152,7 +152,7 @@ public class Inventory
             Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
                                               .Insert(0, playerInven[currentIndex].item_Discription);
 
-            ConsoleUI.Write(ConsoleColor.DarkRed, currentIndex + 1);
+            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
             Console.Write("- ");
             Console.Write(Replace_Name);
             Console.Write(Replace_Effect);
@@ -177,7 +177,7 @@ public class Inventory
         {
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
-                if ((inputNumber >= 0)&&(inputNumber <= playerInven.Count())
+                if ((inputNumber >= 0)&&(inputNumber <= playerInven.Count()))
                     break;
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
@@ -199,7 +199,7 @@ public class Inventory
     }
     public void InvenAdd(Item item)
     {
-        if (playerInven.count == 10)
+        if (playerInven.Count() == 10)
         {
             Console.WriteLine("인벤토리 창이 가득 찼습니다.");
             Console.WriteLine("구입을 원하시면 인벤토리를 비워주십시오.");
@@ -212,7 +212,8 @@ public class Inventory
     public void InvenUse(Item item)
     {
         //포션류
-        player
+        //효과 적용?
+
         playerInven.Remove(item);
     }
     public void Equip(int i)
@@ -228,9 +229,9 @@ public class Inventory
             if (playerInven[i].item_Damage == 0)
             {
                 //갑옷 해제
-                player.Defence = player.Defence - myInven[i].Item_Defence;
+                player.Defense = player.Defense - playerInven[i].item_Defense;
             }
-            else if (playerInven[i].item_Def == 0)
+            else if (playerInven[i].item_Defense == 0)
             {
             //무기 해제
                 player.Damage = player.Damage - playerInven[i].item_Damage;
@@ -245,17 +246,17 @@ public class Inventory
                 //기존 장착한거 없으면
                 if(exArmorNum == -1)
                 {
-                    player.Defence += playerInven[i].item_Defence;
+                    player.Defense += playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
                 //장착한게 있으면
                 else
                 {
-                    player.Defence = player.Defence - playerInven[exArmorNum].item_Defence + playerInven[i].item_Defence;
+                    player.Defense = player.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
             }
-            else if(playerInven[i].item_Defence == 0)
+            else if(playerInven[i].item_Defense == 0)
             {
                 if(exWeaponNum == -1)
                 {

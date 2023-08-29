@@ -12,7 +12,7 @@ public class Shop
         Item rapier = new Item("레이피어", 4, 0, 900, "찌르기에 특화된 사정거리가 길고 폭이 좁은 한손검.");
         Item ScaleArmor = new Item("미늘갑옷", 0, 8, 900, "쇠나 뼈 따위로 만든 미늘조각을 끈으로 연결해 만든 갑옷.");
 
-        Item lowHpPotion = new Item("하급 체력 포션", 0, 0, 400, , 30, "초보 모험자들이 애용하는 물약.");
+        Item lowHpPotion = new Item("하급 체력 포션", 0, 0, 400,  30, "초보 모험자들이 애용하는 물약.");
         Item lowAtkPotion = new Item("하급 힘 포션", 2, 0, 300, 0, "몬스터들을 재료로 고아낸 힘 물약.");
         Item lowDefPotion = new Item("하급 방어력 포션", 0, 2, 200,  0, "몬스터들의 갑각을 재료로 고아낸 물약.");
 
@@ -29,7 +29,7 @@ public class Shop
         Console.WriteLine("상점");
         Console.WriteLine();
         Console.WriteLine("[보유 골드]");
-        ConsoleUI.Write(ConsoleColor.DarkRed, player.Gold);
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
         Console.WriteLine("G");
 
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
@@ -61,7 +61,7 @@ public class Shop
         switch (inputNumber)
         {
             case 0:
-                MainPage.GameStart();
+                // MainPage.GameStart();
                 break;
             case 1:
                 DisplayShopBuy();
@@ -76,15 +76,15 @@ public class Shop
     {
         Console.WriteLine("아이템 구매");
         Console.WriteLine("[보유 골드]");
-        ConsoleUI.Write(ConsoleColor.DarkRed, player.Gold);
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
         Console.WriteLine("G");
         Console.WriteLine("아이템 목록");
 
         PrintList(shopList);
 
-        ConsoleUI.Write(ConsoleColor.DarkRed, "0")
+        ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
-        ConsoleUI.Write(ConsoleColor.DarkRed,"1~")
+        ConsoleUI.Write(ConsoleColor.DarkRed,"1~");
         Console.WriteLine(". 아이템 구매");
 
 
@@ -94,11 +94,11 @@ public class Shop
         Console.Clear();
         Console.WriteLine("아이템 판매");
         Console.WriteLine();
-        ConsoleUI.Write(ConsoleColor.DarkRed, player.Gold);
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
         Console.WriteLine("G");
 
-        PrintList(Inventory.playerInven);
-    )
+        // PrintList(Inventory.playerInven);
+    }
     public void PrintList(List<Item> itemList)
     {
         int currentIndex = 0;
@@ -126,9 +126,9 @@ public class Shop
                 if (itemList[currentIndex].item_Damage == 0)
                 {
                     //방어력 물약
-                    int effectLength = HowManyDigit(itemList[currentIndex].item_Defence) + 6;
+                    int effectLength = HowManyDigit(itemList[currentIndex].item_Defense) + 6;
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 방어력 +" + Convert.ToString(itemList[currentIndex].item_Defence));
+                                                    .Insert(0, " 방어력 +" + Convert.ToString(itemList[currentIndex].item_Defense));
                 }
                 else if (itemList[currentIndex].item_Health > 0)
                 {
@@ -153,7 +153,7 @@ public class Shop
                 Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
                                                   .Insert(0, itemList[currentIndex].item_Discription);
 
-                ConsoleUI.Write(ConsoleColor.DarkRed, currentIndex + 1);
+                ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
                 Console.Write("- ");
                 Console.Write(Replace_Name);
                 Console.Write(Replace_Effect);
@@ -180,9 +180,9 @@ public class Shop
                 if (itemList[currentIndex].item_Damage == 0)
                 {
                     //armor
-                    int effectLength = HowManyDigit(itemList[currentIndex].item_Defence) + 6;
+                    int effectLength = HowManyDigit(itemList[currentIndex].item_Defense) + 6;
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 방어력 +" + Convert.ToString(itemList[currentIndex].item_Defence));
+                                                    .Insert(0, " 방어력 +" + Convert.ToString(itemList[currentIndex].item_Defense));
                 }
                 else
                 {
@@ -200,7 +200,7 @@ public class Shop
                 Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
                                                   .Insert(0, itemList[currentIndex].item_Discription);
 
-                ConsoleUI.Write(ConsoleColor.DarkRed, currentIndex + 1);
+                ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
                 Console.Write("- ");
                 Console.Write(Replace_Name);
                 Console.Write(Replace_Effect);
@@ -209,7 +209,7 @@ public class Shop
                 currentIndex++;
             }
         }
-        public static int HowManyDigit(int j)
+        static int HowManyDigit(int j)
         {
             int i = 0;
             while (true)
@@ -223,3 +223,4 @@ public class Shop
             }
         }
     }
+}

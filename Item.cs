@@ -20,7 +20,7 @@ public class Item
 
     public Item(string _item_name, int _item_damage, int _item_defense, int _item_Gold, int _item_health, string _item_discription)
     {
-        //물약류
+        //포션류
         item_Name = _item_name;
         item_Health = _item_health;
         item_Damage = _item_damage;
