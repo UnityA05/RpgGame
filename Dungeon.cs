@@ -1,5 +1,10 @@
 public class Dungeon
 {
+    /* 던전 불러오기 
+    Dungeon dungeon;
+    dungeon = new Dungeon(plyer); // 플레이어 객체 전달
+    dungeon.inDungeon();
+    */
     Player player; // 플레이어
     Monster[] monster; // 몬스터들
     int inputNumber = 0;
@@ -19,19 +24,19 @@ public class Dungeon
 
         for(int i=0; i<monster.Length; i++) // 몬스터 정보
         {
-            if(monster[i].Health!=0)
+            if(monster[i].Health>0)
             {
-                Console.WriteLine("Lv .{0} {1} HP {2}",monster[i].level, monster[i].Name, monster[i].Health);
+                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i,monster[i].level, monster[i].Name, monster[i].Health);
             }
             else
             {
-                Console.WriteLine("Lv .{0} {1} Dead",monster[i].level, monster[i].Name);
+                Console.WriteLine("{0}  Lv.{1} {2} Dead",i,monster[i].level, monster[i].Name);
             }
 
         }
-
+        Console.WriteLine();
 		Console.WriteLine("[내정보]");
-        Console.WriteLine("Lv .{0} {1} ({2})",player.level, player.job, player.Name);
+        Console.WriteLine("Lv.{0} {1} ({2}) HP {3}",player.level, player.job, player.Name, player.Health);
         Console.WriteLine();
 
         ConsoleUI.Write(ConsoleColor.DarkRed, "1");
@@ -54,6 +59,7 @@ public class Dungeon
 
     public void spawnMoster() // 몬스터 소환
     {
+        monster = new Monster[stageLevel+3];
         for(int i=0; i<(stageLevel+3); i++)
         {
             monster[i] = new Monster();
@@ -69,12 +75,16 @@ public class Dungeon
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             var currentCursor = Console.GetCursorPosition();
             worngInput(currentCursor,0,monster.Length);
+
             if(monster[inputNumber].Health<=0)
             {
                 Console.WriteLine("대상이 죽었습니다.");
                 battleStage(1);
             }
+
+            Thread.Sleep(1000);
             Console.WriteLine("{0}의 공격!", player.Name);
+            Thread.Sleep(1000);
             monster[inputNumber].Health=battleCalculate(player.Damage, monster[inputNumber]); // 공격 계산
 
             for(int i=0;i<monster.Length;i++)
@@ -95,6 +105,7 @@ public class Dungeon
             case 4:
             break;
         }
+        Thread.Sleep(1000);
         if(player.Health<=0)
         {
             Console.WriteLine("You Lose");
@@ -107,9 +118,11 @@ public class Dungeon
 
     public int battleCalculate(int damage, Character character )// 회피, 치명타 공격 계산(몬스터 플레이어 공용)
     {
+        Console.WriteLine();
         int lastDamage;
         int random1 =randomObj.Next(10) ;
         float random2 =randomObj.Next(10) ;
+        Thread.Sleep(1000);
         if(random1>=9) // 회피
         {
             lastDamage = 0;
@@ -128,6 +141,7 @@ public class Dungeon
                     Console.WriteLine("Lv.{0} {1}을(를) 맞췄습니다. [데미지 : {2}]", character.level, character.Name, lastDamage);
                 }
              Console.WriteLine("Lv.{0} {1}",character.level, character.Name);
+             Console.WriteLine();
             if(character.Health-lastDamage<=0)
             {
                 Console.WriteLine("HP{0}->Dead",character.Health);
@@ -138,6 +152,8 @@ public class Dungeon
             }
             character.Health-=lastDamage;
         }
+        Console.WriteLine();
+        Thread.Sleep(1000);
         return character.Health;
     }
 
