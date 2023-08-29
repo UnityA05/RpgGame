@@ -18,8 +18,7 @@ public class MainPage
 		var currentCursor = Console.GetCursorPosition();
 		
 		int inputNumber = 0;
-		bool isWrongInput = true;
-		while (isWrongInput)
+		while (true)
 		{
 			if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
 			{
