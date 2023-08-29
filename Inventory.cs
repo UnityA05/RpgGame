@@ -3,19 +3,18 @@ using System.Runtime.InteropServices.JavaScript;
 
 public class Inventory
 {
-    static List<Item> playerInven { get; set; } = new List<Item>(10);
-    //¾Æ·¡´Â ÀÎº¥Åä¸® ¸®½ºÆ®ÀÇ ÀåÂøÇÑ ¹«±â¿Í °©¿ÊÀÇ ÀÎµ¦½º ¹øÈ£. ¾î¶»°Ô °³¼±ÇÏÁö
+    public static List<Item> playerInven { get; set; } = new List<Item>(10);
+    //ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì¥ì°©ì¤‘ì¸ ì¸ë±ìŠ¤ ë²ˆí˜¸ë“¤
     public static int exArmorNum = -1;
     public static int exWeaponNum = -1;
     static Player player = Program.defaultPlayer;
-    //½ºÅ×ÀÌÅÍ½º
     public Inventory()
     {
-        Item steelArmor = new Item("¹«¼è°©¿Ê", 0, 5, 500, "¹«¼è·Î ¸¸µé¾îÁ® Æ°Æ°ÇÑ °©¿ÊÀÔ´Ï´Ù.");
-        Item leatherArmor = new Item("°¡Á×°©¿Ê", 0, 2, 200, "¼Ò°¡Á×À¸·Î ¸¸µé¾îÁø ³°Àº °¡Á×°©¿Ê.");
+        Item steelArmor = new Item("ë¬´ì‡ ê°‘ì˜·", 0, 5, 500, "ë¬´ì‡ ë¡œ ë§Œë“¤ì–´ì ¸ íŠ¼íŠ¼í•œ ê°‘ì˜·ì…ë‹ˆë‹¤.");
+        Item leatherArmor = new Item("ê°€ì£½ê°‘ì˜·", 0, 2, 200, "ì†Œê°€ì£½ìœ¼ë¡œ ë§Œë“¤ì–´ì§„ ë‚¡ì€ ê°€ì£½ê°‘ì˜·.");
 
-        Item oldSword = new Item("³°Àº °Ë", 2, 0, 800, "½±°Ô º¼ ¼ö ÀÖ´Â ³°Àº °ËÀÔ´Ï´Ù.");
-        Item gladius = new Item("±Û¶óµğ¿ì½º", 6, 0, 1000, "Âî¸£±â¿¡ Æ¯È­µÈ ÂªÀº ÇÑ¼Õ°Ë.");
+        Item oldSword = new Item("ë‚¡ì€ ê²€", 2, 0, 800, "ì‰½ê²Œ ë³¼ ìˆ˜ ìˆëŠ” ë‚¡ì€ ê²€ì…ë‹ˆë‹¤.");
+        Item gladius = new Item("ê¸€ë¼ë””ìš°ìŠ¤", 6, 0, 1000, "ì°Œë¥´ê¸°ì— íŠ¹í™”ëœ ì‚¬ì •ê±°ë¦¬ ì§§ì€ í•œì†ê²€.");
 
         playerInven.Add(steelArmor);
         playerInven.Add(leatherArmor);
@@ -25,11 +24,11 @@ public class Inventory
     public static void DisplayInven()
     {
         Console.Clear();
-        Console.WriteLine("ÀÎº¥Åä¸®");
+        Console.WriteLine("ì¸ë²¤í† ë¦¬");
 
-        Console.WriteLine("º¸À¯ ÁßÀÎ ¾ÆÀÌÅÛÀ» °ü¸®ÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+        Console.WriteLine("ë³´ìœ  ì¤‘ì¸ ì•„ì´í…œì„ ê´€ë¦¬í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
         Console.WriteLine();
-        Console.WriteLine("[¾ÆÀÌÅÛ ¸ñ·Ï]");
+        Console.WriteLine("[ì•„ì´í…œ ëª©ë¡]");
 
         int invenLength = playerInven.Count();
         int currentIndex = 0;
@@ -52,14 +51,14 @@ public class Inventory
                 //armor
                 int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " ¹æ¾î·Â +" + Convert.ToString(playerInven[currentIndex].item_Defense));
+                                                .Insert(0, " ë°©ì–´ë ¥ +" + Convert.ToString(playerInven[currentIndex].item_Defense));
             }
             else
             {
                 //weapon
                 int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " °ø°İ·Â +" + Convert.ToString(playerInven[currentIndex].item_Damage));
+                                                .Insert(0, " ê³µê²©ë ¥ +" + Convert.ToString(playerInven[currentIndex].item_Damage));
             }
             int explainLength = playerInven[currentIndex].item_Discription.Length;
             Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
@@ -73,12 +72,14 @@ public class Inventory
         }
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
-        Console.WriteLine(". ³ª°¡±â");
+        Console.WriteLine(". ë‚˜ê°€ê¸°");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1");
-        Console.WriteLine(". ÀåÂø°ü¸®");
+        Console.WriteLine(". ì¥ì°©ê´€ë¦¬");
+        ConsoleUI.Write(ConsoleColor.DarkRed, "2");
+        Console.WriteLine(". í¬ì…˜ ì‚¬ìš©");
         Console.WriteLine();
 
-        Console.WriteLine("¿øÇÏ½Ã´Â Çàµ¿À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+        Console.WriteLine("ì›í•˜ì‹œëŠ” í–‰ë™ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
 
         var currentCursor = Console.GetCursorPosition();
@@ -89,11 +90,11 @@ public class Inventory
         {
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
-                if (inputNumber == 0 || inputNumber == 1)
+                if (inputNumber == 0 || inputNumber == 1 || inputNumber == 2)
                     break;
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
-            ConsoleUI.Write(ConsoleColor.Red, "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù.");
+            ConsoleUI.Write(ConsoleColor.Red, "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤.");
             Thread.Sleep(1000);
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
             Console.Write("                    ");
@@ -109,22 +110,29 @@ public class Inventory
             case 1:
                 DisplayEquip();
                 break;
+            case 2:
+                DisplayUse();
+                break;
         }
     }
     public static void DisplayEquip()
     {
         Console.Clear();
-        Console.WriteLine("ÀåÂø°ü¸®");
+        Console.WriteLine("ì¸ë²¤í† ë¦¬ - ì¥ì°©ê´€ë¦¬");
 
-        Console.WriteLine("¾ÆÀÌÅÛ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¸é ÀåÂø, ÀåÂøµÈ ¾ÆÀÌÅÛ ¹øÈ£ ÀÔ·Â ½Ã ÇØÁ¦µË´Ï´Ù.");
+        Console.WriteLine("ì•„ì´í…œì— í•´ë‹¹í•˜ëŠ” ìˆ«ìë¥¼ ì…ë ¥í•˜ì‹œë©´ ì¥ì°©, ì¥ì°©ëœ ì•„ì´í…œì˜ ìˆ«ìë¥¼ ì…ë ¥í•˜ì‹œë©´ í•´ì œë©ë‹ˆë‹¤.");
         Console.WriteLine();
-        Console.WriteLine("[¾ÆÀÌÅÛ ¸ñ·Ï]");
+        Console.WriteLine("[ì•„ì´í…œ ëª©ë¡]");
 
-        int invenLength = playerInven.Count();
         int currentIndex = 0;
 
-        while (currentIndex < invenLength)
+        while (currentIndex < playerInven.Count())
         {
+            if(playerInven[currentIndex].GetType() == typeof(Item.Potion))
+            {
+                currentIndex++;
+                continue;
+            }
             string InvenStr_Name = "          |";
             string InvenStr_Effect = "          |";
             string InvenStr_Explain = "                                                            |";
@@ -141,14 +149,14 @@ public class Inventory
                 //armor
                 int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " ¹æ¾î·Â +" + Convert.ToString(playerInven[currentIndex].item_Defense));
+                                                .Insert(0, " ë°©ì–´ë ¥ +" + Convert.ToString(playerInven[currentIndex].item_Defense));
             }
             else
             {
                 //weapon
                 int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
                 Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " °ø°İ·Â +" + Convert.ToString(playerInven[currentIndex].item_Damage));
+                                                .Insert(0, " ê³µê²©ë ¥ +" + Convert.ToString(playerInven[currentIndex].item_Damage));
             }
             int explainLength = playerInven[currentIndex].item_Discription.Length;
             Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
@@ -164,12 +172,12 @@ public class Inventory
         }
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
-        Console.WriteLine(". ³ª°¡±â");
+        Console.WriteLine(". ë‚˜ê°€ê¸°");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1~");
-        Console.WriteLine(". ÀåÂø/ÇØÁ¦");
+        Console.WriteLine(". ì¥ì°©/í•´ì œ");
         Console.WriteLine();
 
-        Console.WriteLine("¿øÇÏ½Ã´Â Çàµ¿À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+        Console.WriteLine("ì›í•˜ì‹œëŠ” í–‰ë™ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
 
         var currentCursor = Console.GetCursorPosition();
@@ -181,10 +189,17 @@ public class Inventory
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
                 if ((inputNumber >= 0)&&(inputNumber <= playerInven.Count()))
-                    break;
+                {
+                    if (inputNumber != 0 && playerInven[inputNumber - 1].GetType() == typeof(Item.Potion))
+                    {
+
+                    }
+                    else
+                        break;
+                }
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
-            ConsoleUI.Write(ConsoleColor.Red, "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù.");
+            ConsoleUI.Write(ConsoleColor.Red, "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤.");
             Thread.Sleep(1000);
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
             Console.Write("                    ");
@@ -201,44 +216,92 @@ public class Inventory
             DisplayEquip();
         }
     }
-    public void InvenAdd(Item item)
+    public static void DisplayUse()
     {
-        if (playerInven.Count() == 10)
+        Console.Clear();
+        Console.WriteLine("ì¸ë²¤í† ë¦¬");
+
+        Console.WriteLine("ë³´ìœ  ì¤‘ì¸ ì•„ì´í…œì„ ê´€ë¦¬í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+        Console.WriteLine();
+        Console.WriteLine("[ì•„ì´í…œ ëª©ë¡]");
+
+        //~~~
+
+        Console.WriteLine();
+        ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+        Console.WriteLine(". ë‚˜ê°€ê¸°");
+        ConsoleUI.Write(ConsoleColor.DarkRed, "1~");
+        Console.WriteLine(". ì¥ì°©/í•´ì œ");
+        Console.WriteLine();
+
+        var currentCursor = Console.GetCursorPosition();
+        int inputNumber = 0;
+        bool isWrongInput = true;
+        while (isWrongInput)
         {
-            Console.WriteLine("ÀÎº¥Åä¸® Ã¢ÀÌ °¡µæ Ã¡½À´Ï´Ù.");
-            Console.WriteLine("±¸ÀÔÀ» ¿øÇÏ½Ã¸é ÀÎº¥Åä¸®¸¦ ºñ¿öÁÖ½Ê½Ã¿À.");
+            if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
+            {
+                if (inputNumber == 0 || playerInven[inputNumber - 1].GetType() == typeof(Item.Potion))
+                    break;
+            }
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+            ConsoleUI.Write(ConsoleColor.Red, "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤.");
+            Thread.Sleep(1000);
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+            Console.Write("                    ");
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+        }
+
+        if(inputNumber == 0)
+        {
+            DisplayInven();
         }
         else
         {
-            playerInven.Add(item);
+
         }
+    }
+    public static void InvenAdd(Item item)
+    {
+        playerInven.Add(item);
+        
     }
     public void InvenUse(Item item)
     {
-        //Æ÷¼Ç·ù
-        //È¿°ú Àû¿ë?
-
+        if(item.item_Health > 0)
+        {
+            player.Health += 30;
+            if(player.Health > 100)
+            {
+                player.Health = 100;
+            }
+        }
+        else if(item.item_Damage > 0)
+        {
+            player.Damage += item.item_Damage;
+        }
+        else if(item.item_Defense > 0)
+        {
+            player.Defense += item.item_Defense;
+        }
         playerInven.Remove(item);
     }
     public static void Equip(int i)
     {
         bool isEquiped = playerInven[i].item_Name.Contains("[E]");
 
-        if (isEquiped == true)  //[E] ¾ÆÀÌÅÛÀ» ¼±ÅÃ
+        if (isEquiped == true)  //[E]ê°€ ë¶™ì€ ì•„ì´í…œ ì„ íƒ(í•´ì œ)
         {
-            //[E]ÅØ½ºÆ® Á¦°Å
+            //[E] ì œê±°
             playerInven[i].item_Name = playerInven[i].item_Name.Replace("[E]", "");
 
-            //ÇØÁ¦ÇÑ´Ù¸é
-            if (playerInven[i].item_Damage == 0)
+            if (playerInven[i].item_Damage == 0)    //ê°‘ì˜· í•´ì œ
             {
-                //°©¿Ê ÇØÁ¦
                 player.Defense = player.Defense - playerInven[i].item_Defense;
                 exArmorNum = -1;
             }
-            else if (playerInven[i].item_Defense == 0)
+            else if (playerInven[i].item_Defense == 0)  //ë¬´ê¸° í•´ì œ
             {
-            //¹«±â ÇØÁ¦
                 player.Damage = player.Damage - playerInven[i].item_Damage;
                 exWeaponNum = -1;
             }
@@ -246,24 +309,21 @@ public class Inventory
         else
         {
             playerInven[i].item_Name = "[E]" + playerInven[i].item_Name;
-            //°©¿ÊÀåÂø
-            if (playerInven[i].item_Damage == 0)
+            if (playerInven[i].item_Damage == 0)    //ê°‘ì˜· ì¥ì°©
             {
-                //±âÁ¸ ÀåÂøÇÑ°Å ¾øÀ¸¸é
-                if(exArmorNum == -1)
+                if(exArmorNum == -1)    //ê¸°ì¡´ ì¥ì°©í•œ ì¥ë¹„ê°€ ì—†ìŒ.
                 {
                     player.Defense += playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
-                //ÀåÂøÇÑ°Ô ÀÖÀ¸¸é
-                else
+                else                    //ê¸°ì¡´ ì¥ì°©í•œ ì¥ë¹„ê°€ ìˆìŒ.
                 {
                     playerInven[exArmorNum].item_Name = playerInven[exArmorNum].item_Name.Replace("[E]", "");
                     player.Defense = player.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
             }
-            else if(playerInven[i].item_Defense == 0)
+            else if(playerInven[i].item_Defense == 0)   //ë¬´ê¸° ì¥ì°©
             {
                 if(exWeaponNum == -1)
                 {

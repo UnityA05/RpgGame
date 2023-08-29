@@ -10,22 +10,24 @@ public class Item
 
     public Item(string _item_name, int _item_damage, int _item_defense, int _item_Gold, string _item_discription)
     {
-        //장비템
+        //armor&weapon
         item_Name = _item_name;
         item_Damage = _item_damage;
         item_Defense = _item_defense;
         item_Gold = _item_Gold;
         item_Discription = _item_discription;
     }
-
-    public Item(string _item_name, int _item_damage, int _item_defense, int _item_Gold, int _item_health, string _item_discription)
+    public class Potion : Item
     {
-        //포션류
+        public Potion(string _item_name, int _item_damage, int _item_defense, int _item_Gold, int _item_health, string _item_discription) : base(_item_name, _item_damage, _item_defense, _item_Gold, _item_discription)
+        {
+        //potion
         item_Name = _item_name;
         item_Health = _item_health;
         item_Damage = _item_damage;
         item_Defense = _item_defense;
         item_Gold = _item_Gold;
         item_Discription = _item_discription;
+        }
     }
 }

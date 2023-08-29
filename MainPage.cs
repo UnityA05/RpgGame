@@ -9,12 +9,16 @@ public class MainPage
 		Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
 		Console.WriteLine("이제 전투를 시작하실 수 있습니다.\n");
 
-		ConsoleUI.Write(ConsoleColor.DarkRed, "1");
+        ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+        Console.WriteLine(". 인벤토리 보기");
+        ConsoleUI.Write(ConsoleColor.DarkRed, "1");
 		Console.WriteLine(". 상태 보기");
 		ConsoleUI.Write(ConsoleColor.DarkRed, "2");
-		Console.WriteLine(". 전투 시작\n");
+		Console.WriteLine(". 전투 시작");
+        ConsoleUI.Write(ConsoleColor.DarkRed, "3");
+        Console.WriteLine(". 상점 방문\n");
 
-		Console.WriteLine("원하시는 행동을 입력해주세요.");
+        Console.WriteLine("원하시는 행동을 입력해주세요.");
 		ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
 		var currentCursor = Console.GetCursorPosition();
 		
