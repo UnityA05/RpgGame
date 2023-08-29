@@ -28,11 +28,11 @@ public class Dungeon
         {
             if(monster[i].Health>0)
             {
-                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i,monster[i].level, monster[i].Name, monster[i].Health);
+                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i+1,monster[i].level, monster[i].Name, monster[i].Health);
             }
             else
             {
-                Console.WriteLine("{0}  Lv.{1} {2} Dead",i,monster[i].level, monster[i].Name);
+                Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
                 alldead++;
             }
 
@@ -96,9 +96,9 @@ public class Dungeon
             Console.WriteLine("대상을 선택해주세요.");
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             var currentCursor = Console.GetCursorPosition();
-            worngInput(currentCursor,0,monster.Length);
+            worngInput(currentCursor,1,monster.Length+1);
 
-            if(monster[inputNumber].Health<=0)
+            if(monster[inputNumber-1].Health<=0)
             {
                 Console.WriteLine("대상이 죽었습니다.");
                 battleStage(1);
@@ -107,7 +107,7 @@ public class Dungeon
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
-            monster[inputNumber].Health=battleCalculate(player.Damage, monster[inputNumber]); // 공격 계산
+            monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
 
             for(int i=0;i<monster.Length;i++)
             {
