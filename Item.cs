@@ -1,5 +1,6 @@
 public class Item
 {
+<<<<<<< HEAD
 
     public string item_Name { get; set; }
     public int item_Atk { get; set; }
@@ -16,4 +17,7 @@ public class Item
         item_Discription = _item_discription;
     }
 
+=======
+    
+>>>>>>> 7b330317c8aee14570acf9ada8de85c075321078
 }
