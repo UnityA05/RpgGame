@@ -3,7 +3,7 @@ using System.Runtime.InteropServices.JavaScript;
 
 public class Inventory
 {
-    List<Item> playerInven = new List<Item>(10);
+    List<Item> playerInven { get; set; } = new List<Item>(10);
     //아래는 인벤토리 리스트에서 각각 무기와 갑옷의 인덱스. 어떻게 고칠지 모르겠다.
     public int exArmorNum = -1;
     public int exWeaponNum = -1;
@@ -16,10 +16,6 @@ public class Inventory
 
         Item oldSword = new Item("낡은 검", 2, 0, 800, "쉽게 볼 수 있는 낡은 검입니다.");
         Item gladius = new Item("글라디우스", 6, 0, 1000, "찌르기에 특화된 사정거리 짧은 한손검.");
-
-        //Item lowHpPotion = new Potion("하급 체력 포션", 0, 0, 400, 20,  "초보 모험자들이 애용하는 물약. 치유량은 미미하다.");
-        //Item lowAtkPotion = new Potion("하급 힘 포션", 2, 0, 300, 0,  "저레벨 몬스터들을 재료로 고아낸 힘 물약.");
-        //Item lowDefPotion = new Potion("하급 방어력 포션", 0, 2, 200, 0,  "일부 몬스터들의 갑각을 재료로 고아낸 물약");
 
         playerInven.Add(steelArmor);
         playerInven.Add(leatherArmor);
@@ -86,6 +82,7 @@ public class Inventory
 
         var currentCursor = Console.GetCursorPosition();
         int inputNumber = 0;
+        bool isWrongInput = true;
 
         while (isWrongInput)
         {
@@ -155,7 +152,7 @@ public class Inventory
             Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
                                               .Insert(0, playerInven[currentIndex].item_Discription);
 
-            ConsoleUI.Write(ConsoleColor DarkRed, currentIndex + 1);
+            ConsoleUI.Write(ConsoleColor.DarkRed, currentIndex + 1);
             Console.Write("- ");
             Console.Write(Replace_Name);
             Console.Write(Replace_Effect);
@@ -174,6 +171,7 @@ public class Inventory
 
         var currentCursor = Console.GetCursorPosition();
         int inputNumber = 0;
+        bool isWrongInput = true;
 
         while (isWrongInput)
         {

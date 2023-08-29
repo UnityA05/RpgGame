@@ -8,9 +8,6 @@ public class Item
     public int      item_Gold { get; set; }
     public string   item_Discription { get; set; }
 
-
-  
-
     public Item(string _item_name, int _item_damage, int _item_defense, int _item_Gold, string _item_discription)
     {
         //¿Â∫Ò≈€
