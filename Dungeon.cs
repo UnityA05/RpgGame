@@ -96,7 +96,7 @@ public class Dungeon
             Console.WriteLine("대상을 선택해주세요.");
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             var currentCursor = Console.GetCursorPosition();
-            worngInput(currentCursor,1,monster.Length+1);
+            worngInput(currentCursor,1,monster.Length);
 
             if(monster[inputNumber-1].Health<=0)
             {
