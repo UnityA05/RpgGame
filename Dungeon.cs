@@ -5,12 +5,13 @@ public class Dungeon
     dungeon = new Dungeon(plyer); // 플레이어 객체 전달
     dungeon.inDungeon();
     */
+    MainPage mainPage = new MainPage();
     Player player; // 플레이어
     Monster[] monster; // 몬스터들
     int inputNumber = 0;
     Random randomObj = new Random(); // 랜덤변수
     static int stageLevel=0; // 스테이지 레벨
-    
+    int alldead=0; // 전부 죽었는지 판단
     public Dungeon(Player player) // 생성자
     {
         this.player=player;
@@ -21,16 +22,18 @@ public class Dungeon
     {
         Console.Clear();
 		Console.WriteLine("Battle!");
+        alldead=0;
 
         for(int i=0; i<monster.Length; i++) // 몬스터 정보
         {
             if(monster[i].Health>0)
             {
-                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i,monster[i].level, monster[i].Name, monster[i].Health);
+                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i+1,monster[i].level, monster[i].Name, monster[i].Health);
             }
             else
             {
-                Console.WriteLine("{0}  Lv.{1} {2} Dead",i,monster[i].level, monster[i].Name);
+                Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
+                alldead++;
             }
 
         }
@@ -39,6 +42,25 @@ public class Dungeon
         Console.WriteLine("Lv.{0} {1} ({2}) HP {3}",player.level, player.job, player.Name, player.Health);
         Console.WriteLine();
 
+        if(alldead==(stageLevel+3)) // 승리 판단
+        {
+            Console.Clear();
+            Console.WriteLine("You Win!");
+            Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+3);
+            Console.WriteLine();
+            ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+		    Console.WriteLine(". 되돌아기기");
+            ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+		    var Cursor = Console.GetCursorPosition();
+            worngInput(Cursor,0,0);
+ 		    switch (inputNumber)
+		    {
+			    case 0:
+				mainPage.GameStart();
+				break;
+		    }
+        }
+//행동 선택
         ConsoleUI.Write(ConsoleColor.DarkRed, "1");
 		Console.WriteLine(". 공격");
         ConsoleUI.Write(ConsoleColor.DarkRed, "2");
@@ -70,13 +92,13 @@ public class Dungeon
     {
         switch(s)
         {
-            case 1:
+            case 1: // 공격하기
             Console.WriteLine("대상을 선택해주세요.");
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             var currentCursor = Console.GetCursorPosition();
-            worngInput(currentCursor,0,monster.Length);
+            worngInput(currentCursor,1,monster.Length);
 
-            if(monster[inputNumber].Health<=0)
+            if(monster[inputNumber-1].Health<=0)
             {
                 Console.WriteLine("대상이 죽었습니다.");
                 battleStage(1);
@@ -85,7 +107,7 @@ public class Dungeon
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
-            monster[inputNumber].Health=battleCalculate(player.Damage, monster[inputNumber]); // 공격 계산
+            monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
 
             for(int i=0;i<monster.Length;i++)
             {
@@ -96,7 +118,25 @@ public class Dungeon
             }
             break;
 
-            case 2:
+            case 2: // 방어하기
+            Thread.Sleep(1000);
+            Console.WriteLine("{0}의 방어!", player.Name);
+            Thread.Sleep(1000);
+            for(int i=0;i<monster.Length;i++)
+            {
+                if(monster[i].Health>0)
+                {
+                    if(monster[i].Damage<=player.Defense)
+                    {
+                        Thread.Sleep(1000);
+                        Console.WriteLine("{0}는(은) 공격을 방어했다!", player.Name);
+                    }
+                    else
+                    {
+                        player.Health=battleCalculate(monster[i].Damage-player.Defense, player);
+                    }
+                }
+            }
             break;
 
             case 3:
@@ -109,11 +149,14 @@ public class Dungeon
         if(player.Health<=0)
         {
             Console.WriteLine("You Lose");
+            mainPage.GameStart(); // 졌으니 쫓겨난다.
         }
         else
         {
             inDungeon(); // 되돌아기기
         }
+
+
     }
 
     public int battleCalculate(int damage, Character character )// 회피, 치명타 공격 계산(몬스터 플레이어 공용)
