@@ -1,8 +1,11 @@
+using System.Net.Security;
+using static System.Net.Mime.MediaTypeNames;
 /// <summary>
-/// ¸ó½ºÅÍ¸¦ »ı¼ºÇÕ´Ï´Ù. ¾Æ¹« °ªµµ ÀÔ·ÂÇÏÁö ¾ÊÀ» ½Ã µğÆúÆ®(¹Ì´Ï¾ğ)ÀÌ »ı¼ºµÇ¸ç
-/// ¸ğµç °ªÀ»(ÀÌ¸§, Ã¼·Â, ´ë¹ÌÁö, ¹æ¾î·Â, Á÷¾÷, ·¹º§, °ñµå, ¸¶³ª ¼ø)À¸·Î ¼³Á¤ÀÌ °¡´ÉÇÕ´Ï´Ù.
-/// ¶ÇÇÑ Á÷¾÷¸¸ ³Ñ±æ½Ã Á÷¾÷¿¡ ¸Â´Â °ªÀ» ¾Ë¾Æ¼­ ¼³Á¤ÇØÁİ´Ï´Ù. ¿¹½Ã : new Monster("Minion");
-/// ¼³Á¤µÈ Á÷¾÷ Minion, SiegeMinion, Voidling
+/// ëª¬ìŠ¤í„°ë¥¼ ìƒì„±í•©ë‹ˆë‹¤. ì•„ë¬´ ê°’ë„ ì…ë ¥í•˜ì§€ ì•Šì„ ì‹œ ë””í´íŠ¸(Minion)ê°€ ìƒì„±ë©ë‹ˆë‹¤.
+/// ëª¨ë“  ê°’ì„(ì´ë¦„, ì²´ë ¥, ëŒ€ë¯¸ì§€, ë°©ì–´ë ¥, ì§ì—…, ë ˆë²¨, ê³¨ë“œ, ë§ˆë‚˜, í¬ë¦¬í‹°ì»¬ í™•ë¥ , íšŒí”¼ìœ¨ ìˆœ)ìœ¼ë¡œ ì„¤ì •ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤.
+/// ì§ì—…ì„ ë„˜ê¸¸ì‹œ ê·¸ì— ë§ëŠ” ê°’ì„ ì•Œì•„ì„œ ì„¤ì •í•´ ì¤ë‹ˆë‹¤. ì˜ˆì‹œ : Monster("Minion");
+/// ì§ì—…ê³¼ ë ˆë²¨ì„ ë„˜ê¸¸ì‹œ ê·¸ì— ë§ëŠ” ê°’ì„ ì•Œì•„ì„œ ì„¤ì •í•´ ì¤ë‹ˆë‹¤. ì˜ˆì‹œ : Monster("Minion", 1);
+/// ì„¤ì •ëœ ì§ì—… : "Minion", "SiegeMinion", 'Voidling" ë‹¨ ì˜ëª»ëœ ê°’ì„ ì…ë ¥ì‹œ ìë™ìœ¼ë¡œ "Miniond"ìœ¼ë¡œ ì„¤ì •ë©ë‹ˆë‹¤.
 /// </summary> 
 public class Monster : Character
 {
@@ -10,72 +13,145 @@ public class Monster : Character
     public int Health { get; set; }
     public int Damage { get; set; }
     public int Defense { get; set; }
-    public string job { get; set; }
+    public Job job { get; set; }
     public int level { get; set; }
     public int Gold { get; set; }
     public int Mp { get; set; }
-    public Monster(string name, int health, int damage, int defense, string _job, int _level, int gold, int mp)
+    public bool IsDead { get; set; }
+    public float CriticalPer { get; set; }
+    public float AvoidanceRate { get; set; }
+    public Monster(string name, int health, int damage, int defense, string _job, int _level, int gold, int mp, float criticalPer, float avoidanceRate)
     {
+        
+        if(_job == "SiegeMinion")
+            job = new SiegeMinion();
+        else if(_job == "Voidling")
+            job = new Voidling();
+        else
+            job = new Minion();
         Name = name;
-        Health = health;
-        Damage = damage;
-        Defense = defense;
-        job = _job;
+        Health = health + job.AdditionalHp;
+        Damage = damage + job.AdditionalATK;
+        Defense = defense + job.AdditionalDEF;
         level = _level;
         Gold = gold;
-        Mp = mp;
+        Mp = mp + job.AdditionalMp;
+        IsDead = false;
+        CriticalPer = criticalPer + job.AdditionalCriticalPer;
+        AvoidanceRate = avoidanceRate + job.AdditionalAvoidanceRate;
     } 
     public Monster()
     {
-        Name = "¹Ì´Ï¾ğ";
+        job = new Minion();
+        Name = "ë¯¸ë‹ˆì–¸";
         Health = 15;
         Damage = 1;
         Defense = 1;
-        job = MonsterType.Minion.ToString();
         level = 2;
         Gold = 0;
         Mp = 0;
+        IsDead = false;
+        CriticalPer = 15f;
+        AvoidanceRate = 10f;
     }
-    public Monster(string _job)
+    public Monster(string _job, int _level)
     {
-        if (_job == MonsterType.Minion.ToString())
+        if (_job == "SiegeMinion")
         {
-            Name = "¹Ì´Ï¾ğ";
-            Health = 15;
-            Damage = 1;
-            Defense = 1;
-            job = MonsterType.Minion.ToString();
-            level = 2;
+            job = new SiegeMinion();
+            Name = "ëŒ€í¬ë¯¸ë‹ˆì–¸";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = _level;
             Gold = 0;
-            Mp = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
         }
-        else if (_job == MonsterType.SiegeMinion.ToString())
+        else if (_job == "Voidling")
         {
-            Name = "´ëÆ÷¹Ì´Ï¾ğ";
-            Health = 25;
-            Damage = 10;
-            Defense = 10;
-            job = MonsterType.SiegeMinion.ToString();
-            level = 5;
+            job = new Voidling();
+            Name = "ê³µí—ˆì¶©";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = _level;
             Gold = 0;
-            Mp = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
         }
         else
         {
-            Name = "°øÇãÃæ";
-            Health = 10;
-            Damage = 20;
-            Defense = 1;
-            job = MonsterType.Voidling.ToString();
-            level = 3;
+            job = new Minion();
+            Name = "ë¯¸ë‹ˆì–¸";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = _level;
             Gold = 0;
-            Mp = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
         }
     }
-    public enum MonsterType
+    public Monster(string _job)
     {
-        Minion,
-        SiegeMinion,
-        Voidling
+        if (_job == "SiegeMinion")
+        {
+            job = new SiegeMinion();
+            Name = "ëŒ€í¬ë¯¸ë‹ˆì–¸";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = 5;
+            Gold = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
+        }
+        else if (_job == "Voidling")
+        {
+            job = new Voidling();
+            Name = "ê³µí—ˆì¶©";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = 3;
+            Gold = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
+        }
+        else
+        {
+            job = new Minion();
+            Name = "ë¯¸ë‹ˆì–¸";
+            Health = 15 + job.AdditionalHp;
+            Damage = 1 + job.AdditionalATK;
+            Defense = 1 + job.AdditionalDEF;
+            level = 1;
+            Gold = 0;
+            Mp = 0 + job.AdditionalMp;
+            IsDead = false;
+            CriticalPer = 15f + job.AdditionalCriticalPer;
+            AvoidanceRate = 10f + job.AdditionalAvoidanceRate;
+        }
+    }
+    public bool TryGetExperience(out int result)
+    {
+        result = 0;
+        if (IsDead)
+        {
+            result = level;
+            return true;
+        }
+        return false; 
     }
 }
