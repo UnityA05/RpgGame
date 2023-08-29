@@ -3,8 +3,8 @@ using System.Numerics;
 
 public class Shop
 {
-    public List<Item> shopList = new List<Item>();
-    Player player = Program.defaultPlayer; 
+    private static List<Item> shopList { get; set; } = new List<Item>();
+    static Player player = Program.defaultPlayer; 
 
     public Shop()
     {
@@ -23,21 +23,23 @@ public class Shop
         shopList.Add(lowDefPotion);
     }
 
-    public void DisplayShop()
+    public static void DisplayShop()
     {
         Console.Clear();
+        Shop shop = new Shop();
         Console.WriteLine("상점");
         Console.WriteLine();
         Console.WriteLine("[보유 골드]");
         ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
         Console.WriteLine("G");
 
+        Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1");
-        Console.WriteLine("아이템 구매");
+        Console.WriteLine(". 아이템 구매");
         ConsoleUI.Write(ConsoleColor.DarkRed, "2");
-        Console.WriteLine("아이템 판매");
+        Console.WriteLine(". 아이템 판매");
 
         var currentCursor = Console.GetCursorPosition();
         int inputNumber = 0;
@@ -61,7 +63,8 @@ public class Shop
         switch (inputNumber)
         {
             case 0:
-                // MainPage.GameStart();
+                MainPage mainPage = new MainPage();
+                mainPage.GameStart();
                 break;
             case 1:
                 DisplayShopBuy();
@@ -72,24 +75,57 @@ public class Shop
         }
     }
 
-    public void DisplayShopBuy()
+    public static void DisplayShopBuy()
     {
         Console.WriteLine("아이템 구매");
         Console.WriteLine("[보유 골드]");
         ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
         Console.WriteLine("G");
+        Console.WriteLine();
         Console.WriteLine("아이템 목록");
-
+        
         PrintList(shopList);
+        Console.WriteLine();
 
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
         ConsoleUI.Write(ConsoleColor.DarkRed,"1~");
         Console.WriteLine(". 아이템 구매");
 
+        var currentCursor = Console.GetCursorPosition();
+        int inputNumber = 0;
+        bool isWrongInput = true;
 
+        while (isWrongInput)
+        {
+            if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
+            {
+                if (inputNumber == 0 || inputNumber == 1 || inputNumber == 2)
+                    break;
+            }
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+            ConsoleUI.Write(ConsoleColor.Red, "잘못된 입력입니다.");
+            Thread.Sleep(1000);
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+            Console.Write("                    ");
+            Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+        }
+
+        switch (inputNumber)
+        {
+            case 0:
+                MainPage mainPage = new MainPage();
+                mainPage.GameStart();
+                break;
+            case 1:
+                DisplayShopBuy();
+                break;
+            case 2:
+                DisplayShopSell();
+                break;
+        }
     }
-    public void DisplayShopSell()
+    public static void DisplayShopSell()
     {
         Console.Clear();
         Console.WriteLine("아이템 판매");
@@ -99,19 +135,19 @@ public class Shop
 
         // PrintList(Inventory.playerInven);
     }
-    public void PrintList(List<Item> itemList)
+    public static void PrintList(List<Item> itemList)
     {
         int currentIndex = 0;
 
         while (currentIndex < itemList.Count())
         {
-            if (itemList[currentIndex].item_Health >=0)
+            if (itemList[currentIndex].item_Health >=0) //물약이라면
             {
                 //출력 칸 정렬
                 string InvenStr_Name    = "          |";
                 string InvenStr_Effect  = "          |";
                 string InvenStr_Gold    = "          |";
-                string InvenStr_Explain = "                                                            |";
+                string InvenStr_Explain = "                                                  |";
 
                 string Replace_Name = string.Empty;
                 string Replace_Effect = string.Empty;
@@ -157,8 +193,9 @@ public class Shop
                 Console.Write("- ");
                 Console.Write(Replace_Name);
                 Console.Write(Replace_Effect);
-                Console.WriteLine(Replace_Gold);
+                Console.Write(Replace_Gold);
                 Console.Write(Replace_Explain);
+                Console.WriteLine();
                 currentIndex++;
             }
             else
@@ -166,7 +203,7 @@ public class Shop
                 string InvenStr_Name    = "          |";
                 string InvenStr_Effect  = "          |";
                 string InvenStr_Gold    = "          |";
-                string InvenStr_Explain = "                                                            |";
+                string InvenStr_Explain = "                                                  |";
 
                 string Replace_Name = string.Empty;
                 string Replace_Effect = string.Empty;
@@ -204,8 +241,9 @@ public class Shop
                 Console.Write("- ");
                 Console.Write(Replace_Name);
                 Console.Write(Replace_Effect);
-                Console.WriteLine(Replace_Gold);
+                Console.Write(Replace_Gold);
                 Console.Write(Replace_Explain);
+                Console.WriteLine();
                 currentIndex++;
             }
         }

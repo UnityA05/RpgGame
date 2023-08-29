@@ -1,32 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\Desktop\\Sparta\\C#\\A05\\RpgGame\\RpgGame.csproj": {}
+    "C:\\Users\\korong\\Desktop\\team\\RpgGame\\RpgGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\Desktop\\Sparta\\C#\\A05\\RpgGame\\RpgGame.csproj": {
+    "C:\\Users\\korong\\Desktop\\team\\RpgGame\\RpgGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\Desktop\\Sparta\\C#\\A05\\RpgGame\\RpgGame.csproj",
+        "projectUniqueName": "C:\\Users\\korong\\Desktop\\team\\RpgGame\\RpgGame.csproj",
         "projectName": "RpgGame",
-        "projectPath": "C:\\Users\\USER\\Desktop\\Sparta\\C#\\A05\\RpgGame\\RpgGame.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\Desktop\\Sparta\\C#\\A05\\RpgGame\\obj\\",
+        "projectPath": "C:\\Users\\korong\\Desktop\\team\\RpgGame\\RpgGame.csproj",
+        "packagesPath": "C:\\Users\\korong\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\korong\\Desktop\\team\\RpgGame\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\korong\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
         },
         "frameworks": {
           "net7.0": {

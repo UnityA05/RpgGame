@@ -3,11 +3,11 @@ using System.Runtime.InteropServices.JavaScript;
 
 public class Inventory
 {
-    List<Item> playerInven { get; set; } = new List<Item>(10);
+    static List<Item> playerInven { get; set; } = new List<Item>(10);
     //아래는 인벤토리 리스트의 장착한 무기와 갑옷의 인덱스 번호. 어떻게 개선하지
-    public int exArmorNum = -1;
-    public int exWeaponNum = -1;
-    Player player = Program.defaultPlayer;
+    public static int exArmorNum = -1;
+    public static int exWeaponNum = -1;
+    static Player player = Program.defaultPlayer;
     //스테이터스
     public Inventory()
     {
@@ -15,14 +15,14 @@ public class Inventory
         Item leatherArmor = new Item("가죽갑옷", 0, 2, 200, "소가죽으로 만들어진 낡은 가죽갑옷.");
 
         Item oldSword = new Item("낡은 검", 2, 0, 800, "쉽게 볼 수 있는 낡은 검입니다.");
-        Item gladius = new Item("글라디우스", 6, 0, 1000, "찌르기에 특화된 사정거리 짧은 한손검.");
+        Item gladius = new Item("글라디우스", 6, 0, 1000, "찌르기에 특화된 짧은 한손검.");
 
         playerInven.Add(steelArmor);
         playerInven.Add(leatherArmor);
         playerInven.Add(oldSword);
         playerInven.Add(gladius);
     }
-    public void DisplayInven()
+    public static void DisplayInven()
     {
         Console.Clear();
         Console.WriteLine("인벤토리");
@@ -68,9 +68,10 @@ public class Inventory
             Console.Write(Replace_Name);
             Console.Write(Replace_Effect);
             Console.Write(Replace_Explain);
+            Console.WriteLine();
             currentIndex++;                         
         }
-
+        Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1");
@@ -102,14 +103,15 @@ public class Inventory
         switch (inputNumber)
         {
             case 0:
-                // MainPage.GameStart();
+                MainPage mainPage = new MainPage();
+                mainPage.GameStart();
                 break;
             case 1:
                 DisplayEquip();
                 break;
         }
     }
-    public void DisplayEquip()
+    public static void DisplayEquip()
     {
         Console.Clear();
         Console.WriteLine("장착관리");
@@ -153,13 +155,14 @@ public class Inventory
                                               .Insert(0, playerInven[currentIndex].item_Discription);
 
             ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
-            Console.Write("- ");
+            Console.Write(" - ");
             Console.Write(Replace_Name);
             Console.Write(Replace_Effect);
             Console.Write(Replace_Explain);
+            Console.WriteLine();
             currentIndex++;
         }
-
+        Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1~");
@@ -195,6 +198,7 @@ public class Inventory
         else
         {
             Equip(inputNumber - 1);
+            DisplayEquip();
         }
     }
     public void InvenAdd(Item item)
@@ -216,25 +220,27 @@ public class Inventory
 
         playerInven.Remove(item);
     }
-    public void Equip(int i)
+    public static void Equip(int i)
     {
         bool isEquiped = playerInven[i].item_Name.Contains("[E]");
 
-        if (isEquiped == true)
+        if (isEquiped == true)  //[E] 아이템을 선택
         {
-            //player
+            //[E]텍스트 제거
             playerInven[i].item_Name = playerInven[i].item_Name.Replace("[E]", "");
 
-            //if 해제
+            //해제한다면
             if (playerInven[i].item_Damage == 0)
             {
                 //갑옷 해제
                 player.Defense = player.Defense - playerInven[i].item_Defense;
+                exArmorNum = -1;
             }
             else if (playerInven[i].item_Defense == 0)
             {
             //무기 해제
                 player.Damage = player.Damage - playerInven[i].item_Damage;
+                exWeaponNum = -1;
             }
         }
         else
@@ -252,6 +258,7 @@ public class Inventory
                 //장착한게 있으면
                 else
                 {
+                    playerInven[exArmorNum].item_Name = playerInven[exArmorNum].item_Name.Replace("[E]", "");
                     player.Defense = player.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
@@ -265,6 +272,7 @@ public class Inventory
                 }
                 else
                 {
+                    playerInven[exWeaponNum].item_Name = playerInven[exWeaponNum].item_Name.Replace("[E]", "");
                     player.Damage = player.Damage - playerInven[exWeaponNum].item_Damage + playerInven[i].item_Damage;
                     exWeaponNum = i;
                 }

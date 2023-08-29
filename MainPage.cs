@@ -23,7 +23,7 @@ public class MainPage
 		{
 			if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
 			{
-				if (inputNumber == 1 || inputNumber == 2)
+				if ( inputNumber == 0 || inputNumber == 1 || inputNumber == 2 || inputNumber == 3)
 					break ;
 			}
 			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
@@ -36,10 +36,16 @@ public class MainPage
 
 		switch (inputNumber)
 		{
+			case 0:
+				Inventory.DisplayInven();
+				break;
 			case 1:
 				Status();
 				break;
 			case 2:
+				break;
+			case 3:
+				Shop.DisplayShop();
 				break;
 		}
 	}
