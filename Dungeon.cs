@@ -126,11 +126,10 @@ public class Dungeon
             {
                 if(monster[i].Health>0)
                 {
-                    if(monster[i].Damage<=0)
+                    if(monster[i].Damage<=player.Defense)
                     {
                         Thread.Sleep(1000);
                         Console.WriteLine("{0}는(은) 공격을 방어했다!", player.Name);
-                        Thread.Sleep(1000);
                     }
                     else
                     {
