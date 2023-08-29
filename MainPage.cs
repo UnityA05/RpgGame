@@ -40,6 +40,8 @@ public class MainPage
 				Status();
 				break;
 			case 2:
+				Dungeon dungeon = new Dungeon(Program.defaultPlayer);
+				dungeon.inDungeon();
 				break;
 		}
 	}
