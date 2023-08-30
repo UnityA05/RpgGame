@@ -7,7 +7,6 @@ public class Inventory
     //아이템 리스트에서 장착중인 인덱스 번호들
     public static int exArmorNum = -1;
     public static int exWeaponNum = -1;
-    static Player player = Program.defaultPlayer;
     public Inventory()
     {
 
@@ -17,11 +16,17 @@ public class Inventory
         Item oldSword = new Item("낡은 검", 2, 0, 800, "쉽게 볼 수 있는 낡은 검입니다.");
         Item gladius = new Item("글라디우스", 6, 0, 1000, "찌르기에 특화된 사정거리 짧은 한손검.");
 
+        Item.Potion lowHpPotion = new Item.Potion("하급 체력 포션", 0, 0, 400, 30, "초보 모험자들이 애용하는 물약.");
+        Item.Potion lowAtkPotion = new Item.Potion("하급 힘 포션", 2, 0, 300, 0, "몬스터들을 재료로 고아낸 힘 물약.");
+        Item.Potion lowDefPotion = new Item.Potion("하급 방어력 포션", 0, 2, 200, 0, "몬스터들의 갑각을 재료로 고아낸 물약.");
+
         playerInven.Add(steelArmor);
         playerInven.Add(leatherArmor);
         playerInven.Add(oldSword);
         playerInven.Add(gladius);
-
+        playerInven.Add(lowHpPotion);
+        playerInven.Add(lowAtkPotion);
+        playerInven.Add(lowDefPotion);
     }
     public void DisplayInven()
     {
@@ -159,8 +164,6 @@ public class Inventory
         switch (inputNumber)
         {
             case 0:
-                MainPage mainPage = new MainPage();
-                mainPage.GameStart();
                 break;
             case 1:
                 DisplayEquip();
@@ -281,11 +284,11 @@ public class Inventory
         Console.WriteLine();
         Console.WriteLine("[포션 목록]");
 
-        foreach (Item potion in playerInven)
+        foreach (Item pot in playerInven)
         {
-            if (potion.GetType() == typeof(Item.Potion))
+            if (pot.GetType() == typeof(Item.Potion))
             {
-                potions.Add(potion);
+                potions.Add(pot);
             }
         }
 
@@ -372,7 +375,7 @@ public class Inventory
         }
         else
         {
-            int index = playerInven.FindIndex(x => x.item_Name.Equals(potions[inputNumber - 1]));
+            int index = playerInven.FindIndex(x => x.item_Name.Equals(potions[inputNumber - 1].item_Name));
             InvenUse(playerInven[index]);
             potions.Clear();
             DisplayInven();
@@ -386,19 +389,19 @@ public class Inventory
     {
         if (item.item_Health > 0)
         {
-            player.Health += 30;
-            if (player.Health > 100)
+            Program.defaultPlayer.Health += 30;
+            if (Program.defaultPlayer.Health > 100)
             {
-                player.Health = 100;
+                Program.defaultPlayer.Health = 100;
             }
         }
         else if (item.item_Damage > 0)
         {
-            player.Damage += item.item_Damage;
+            Program.defaultPlayer.Damage += item.item_Damage;
         }
         else if (item.item_Defense > 0)
         {
-            player.Defense += item.item_Defense;
+            Program.defaultPlayer.Defense += item.item_Defense;
         }
         playerInven.Remove(item);
     }
@@ -413,12 +416,12 @@ public class Inventory
 
             if (playerInven[i].item_Damage == 0)    //갑옷 해제
             {
-                player.Defense = player.Defense - playerInven[i].item_Defense;
+                Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - playerInven[i].item_Defense;
                 exArmorNum = -1;
             }
             else if (playerInven[i].item_Defense == 0)  //무기 해제
             {
-                player.Damage = player.Damage - playerInven[i].item_Damage;
+                Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - playerInven[i].item_Damage;
                 exWeaponNum = -1;
             }
         }
@@ -429,13 +432,13 @@ public class Inventory
             {
                 if (exArmorNum == -1)    //기존 장착한 장비가 없음.
                 {
-                    player.Defense += playerInven[i].item_Defense;
+                    Program.defaultPlayer.Defense += playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
                 else                    //기존 장착한 장비가 있음.
                 {
                     playerInven[exArmorNum].item_Name = playerInven[exArmorNum].item_Name.Replace("[E]", "");
-                    player.Defense = player.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
+                    Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
                     exArmorNum = i;
                 }
             }
@@ -443,13 +446,13 @@ public class Inventory
             {
                 if (exWeaponNum == -1)
                 {
-                    player.Damage += playerInven[i].item_Damage;
+                    Program.defaultPlayer.Damage += playerInven[i].item_Damage;
                     exWeaponNum = i;
                 }
                 else
                 {
                     playerInven[exWeaponNum].item_Name = playerInven[exWeaponNum].item_Name.Replace("[E]", "");
-                    player.Damage = player.Damage - playerInven[exWeaponNum].item_Damage + playerInven[i].item_Damage;
+                    Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - playerInven[exWeaponNum].item_Damage + playerInven[i].item_Damage;
                     exWeaponNum = i;
                 }
             }

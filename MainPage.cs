@@ -181,8 +181,7 @@ public class MainPage
 				Program.inventory.DisplayInven();
 				break;
 			case 3:
-				Shop shop = new();
-				shop.DisplayShop();
+				Program.shop.DisplayShop();
 				break;
 			case 4:
 				Dungeon dungeon = new Dungeon(Program.defaultPlayer);

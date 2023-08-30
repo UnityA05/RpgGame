@@ -4,7 +4,6 @@ using System.Numerics;
 public class Shop
 {
     private static List<Item> shopList { get; set; } = new List<Item>();
-    static Player player = Program.defaultPlayer; 
 
     public Shop()
     {
@@ -29,7 +28,7 @@ public class Shop
         Console.WriteLine("상점");
         Console.WriteLine();
         Console.WriteLine("[보유 골드]");
-        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(Program.defaultPlayer.Gold));
         Console.WriteLine("G");
 
         Console.WriteLine();
@@ -65,8 +64,6 @@ public class Shop
         switch (inputNumber)
         {
             case 0:
-                MainPage mainPage = new MainPage();
-                mainPage.GameStart();
                 break;
             case 1:
                 DisplayShopBuy();
@@ -82,7 +79,7 @@ public class Shop
         Console.Clear();
         Console.WriteLine("아이템 구매");
         Console.WriteLine("[보유 골드]");
-        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(Program.defaultPlayer.Gold));
         Console.WriteLine("G");
         Console.WriteLine();
         Console.WriteLine("아이템 목록");
@@ -125,9 +122,10 @@ public class Shop
         }
         else
         {
-            if(player.Gold < shopList[inputNumber-1].item_Gold)
+            if(Program.defaultPlayer.Gold < shopList[inputNumber-1].item_Gold)
             {
                 Console.WriteLine("소지하신 골드가 적습니다.");
+                Thread.Sleep(1000);
                 DisplayShopBuy();
             }
             else
@@ -136,12 +134,15 @@ public class Shop
                 {
                     Console.WriteLine("인벤토리 창이 가득 찼습니다.");
                     Console.WriteLine("인벤토리를 비우고 다시 구매해주세요.");
+                    Thread.Sleep(1000);
+                    DisplayShopBuy();
                 }
                 else
                 {
                     Console.WriteLine("구매를 완료했습니다.");
-                    player.Gold -= shopList[inputNumber - 1].item_Gold;
+                    Program.defaultPlayer.Gold -= shopList[inputNumber - 1].item_Gold;
                     Inventory.InvenAdd(shopList[inputNumber - 1]);
+                    Thread.Sleep(1000);
                     DisplayShopBuy();
                 }
             }
@@ -152,7 +153,7 @@ public class Shop
         Console.Clear();
         Console.WriteLine("아이템 판매");
         Console.WriteLine();
-        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(player.Gold));
+        ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(Program.defaultPlayer.Gold));
         Console.WriteLine("G");
 
         PrintList(Inventory.playerInven);
@@ -192,9 +193,18 @@ public class Shop
         }
         else
         {
-            player.Gold += Inventory.playerInven[inputNumber - 1].item_Gold;
-            Inventory.playerInven.Remove(Inventory.playerInven[inputNumber - 1]);
-            DisplayShopSell();
+            if (Inventory.playerInven[inputNumber - 1].item_Name.Contains("[E]"))
+            {
+                Console.WriteLine("장착 중인 아이템입니다.");
+                Thread.Sleep(1000);
+                DisplayShopSell();
+            }
+            else
+            {
+                Console.WriteLine("판매가 완료되었습니다.");
+                Program.defaultPlayer.Gold += Inventory.playerInven[inputNumber - 1].item_Gold;
+                Inventory.playerInven.Remove(Inventory.playerInven[inputNumber - 1]);
+            }
         }
     }
     public void PrintList(List<Item> itemList)
