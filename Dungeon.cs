@@ -1,3 +1,6 @@
+using System.Reflection.Metadata;
+using SprtaGame;
+
 public class Dungeon
 {
     /* 던전 불러오기 
@@ -47,8 +50,8 @@ public class Dungeon
         {
             Console.Clear();
             Console.WriteLine("You Win!");
-            stageLevel++;
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
+            stageLevel++;
             Console.WriteLine();
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
 		    Console.WriteLine(". 되돌아기기");
@@ -58,7 +61,8 @@ public class Dungeon
  		    switch (inputNumber)
 		    {
 			    case 0:
-				mainPage.GameStart();
+                //돌아가기
+
 				break;
 		    }
         }
@@ -70,7 +74,7 @@ public class Dungeon
 		ConsoleUI.Write(ConsoleColor.DarkRed, "3");
 		Console.WriteLine(". 스킬");
         ConsoleUI.Write(ConsoleColor.DarkRed, "4");
-		Console.WriteLine(". 회복");
+		Console.WriteLine(". 창고");
 		Console.WriteLine();
 
         Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -113,46 +117,78 @@ public class Dungeon
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
             monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
-            if(monster[inputNumber-1].Health<=0)
-            {
-                monster[inputNumber-1].IsDead=true;
-            }
-            for(int i=0;i<monster.Length;i++)
-            {
-                if(!monster[i].IsDead)
-                {
-                    player.Health=battleCalculate(monster[i].Damage, player);
-                }
-            }
+            mosterAtteck(0);
             break;
 
             case 2: // 방어하기
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 방어!", player.Name);
             Thread.Sleep(1000);
-            for(int i=0;i<monster.Length;i++)
+            mosterAtteck(1);
+            break;
+
+            case 3:  // 스킬 사용하기
+            for(int i = 1; i<=player.Skills.Count; i++) // 스킬 목록
             {
-                if(monster[i].Health>0)
+                Console.WriteLine("{0}. {1}: {2}  -MP{3}  현재MP{4}", i, player.Skills[i-1].Name, player.Skills[i-1].Explanation, player.Skills[i-1].MpConsumption, player.Mp);
+            }
+            Console.WriteLine("스킬을 선택해주세요.");
+		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+            currentCursor = Console.GetCursorPosition();
+            worngInput(currentCursor,1,player.Skills.Count);
+            Thread.Sleep(1000);
+            Console.WriteLine("{0}의 {1}!", player.Name, player.Skills[inputNumber-1].Name);
+/////////////////////////
+            if(player.Skills[inputNumber-1].DamageScale<=0) // 스킬 사용하기(힐이면)
+            {
+                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health+(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100));
+                player.Health+=(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100);
+            }
+            else//(힐이 아니면)
+            {
+                if(player.Skills[inputNumber-1].Name.Equals("더블 스트라이크")) // 랜덤 공격
                 {
-                    if(monster[i].Damage<=player.Defense)
+                    for(int i=0;i<player.Skills[inputNumber-1].TargetCount;i++)
                     {
-                        Thread.Sleep(1000);
-                        Console.WriteLine("{0}는(은) 공격을 방어했다!", player.Name);
+                        int random = randomObj.Next(monster.Length);
+                        if(monster[random].IsDead)
+                        {
+                            i--;
+                        }
+                        else
+                        {
+                            battleCalculate((int)(player.Damage*player.Skills[inputNumber-1].DamageScale),monster[random]);
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    int skills = inputNumber-1;
+                    int[] count = new int[player.Skills[inputNumber-1].TargetCount];
+                    for(int i=0; i<count.Length;i++)
                     {
-                        player.Health=battleCalculate(monster[i].Damage-player.Defense, player);
+                        Console.WriteLine("대상을 선택해주세요.");
+		                ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+                        currentCursor = Console.GetCursorPosition();
+                        worngInput(currentCursor,1,monster.Length);
+                        count[i]=inputNumber-1;
+                    }
+                    for(int i=0; i<count.Length; i++)
+                    {
+                        for(int j=0; j<player.Skills[skills].AttackCount ; j++)
+                        {
+                            battleCalculate((int)(player.Damage*player.Skills[skills].DamageScale),monster[count[i]]);
+                        }
                     }
                 }
             }
+//////////////////////////////////////////////
+            Thread.Sleep(1000);
+            mosterAtteck(0);
             break;
 
-            case 3:
-            
-            break;
-
-            case 4:
-
+            case 4: // 아이템 보기
+            Program.inventory.DisplayInven();
             break;
         }
         if(player.Health<=0){player.IsDead=true;}
@@ -170,6 +206,47 @@ public class Dungeon
 
     }
 
+    public void mosterAtteck(int typs)
+    {
+        Console.Clear();
+        Console.WriteLine("몬스터 공격!");
+            for(int i=0;i<monster.Length;i++) // 몬스터 차례
+            {
+                if(!monster[i].IsDead)
+                {
+                    if(typs==0)
+                    {
+                        if(monster[i].Damage<=player.Defense)
+                        {
+                            Console.WriteLine("{0}는(은) 공격을 방어했다!", player.Name);
+                        }
+                        else
+                        {
+                            player.Health=battleCalculate(monster[i].Damage-player.Defense, player);
+                        }
+                    }
+                    else
+                    {
+                        int random = randomObj.Next((int)10); // 30퍼 확률로 스킬 사용
+                        if(random>7)
+                        {
+                            random = randomObj.Next((int)monster[i].Skills.Count);
+                            Console.WriteLine("Lv.{0} {1}의 {2}!", monster[i].level, monster[i].Name, monster[i].Skills[random].Name);
+                            for(int j=0; j<monster[i].Skills[random].AttackCount;j++)
+                            {
+                                player.Health=battleCalculate((int)(monster[i].Damage*monster[i].Skills[random].DamageScale), player);
+                            }
+                        }
+                        else
+                        {
+                            player.Health=battleCalculate(monster[i].Damage, player);
+                        }
+                    }
+                }
+                Thread.Sleep(1000);
+            }
+    }
+
     public int battleCalculate(int damage, Character character )// 회피, 치명타 공격 계산(몬스터 플레이어 공용)
     {
         Console.WriteLine();
@@ -177,14 +254,14 @@ public class Dungeon
         int random1 =randomObj.Next(100) ;
         float random2 =randomObj.Next(100) ;
         Thread.Sleep(1000);
-        if(random1>=(90-character.AvoidanceRate)) // 회피
+        if(random1>=(100-character.AvoidanceRate)) // 회피
         {
             lastDamage = 0;
             Console.WriteLine("Lv.{0} {1}을(를) 공격했지만 아무일도 일어나지 않았습니다.",character.level, character.Name);
         }
         else
         {
-            if(random2>=(85-character.CriticalPer)) // 치명타
+            if(random2>=(100-character.CriticalPer)) // 치명타
                 {
                     lastDamage = damage*100/60;
                     Console.WriteLine("Lv.{0} {1}을(를) 맞췄습니다. [데미지 : {2}] - 치명타 공격!!", character.level, character.Name, lastDamage);
@@ -199,6 +276,7 @@ public class Dungeon
             if(character.Health-lastDamage<=0)
             {
                 Console.WriteLine("HP{0}->Dead",character.Health);
+                character.IsDead=true;
             }
             else
             {
