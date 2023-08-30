@@ -83,7 +83,7 @@ public class Heal : Skill
     /// </summary>
     public float RecoveryScale { get; set; }
     /// <summary>
-    /// 힐은 최대체력 비율로 회복합니다. 기본 비율 0.3% => RecoveryScale =0.3f;
+    /// 힐은 최대체력 비율로 회복합니다. 기본 비율 0.3배 => RecoveryScale =0.3f;
     /// </summary>
     public Heal()
     {
@@ -93,7 +93,7 @@ public class Heal : Skill
         TargetCount = 1;
         AttackCount = 1;
         RecoveryScale = 0.3f;
-        Explanation = string.Format("최대체력의 {0}만큼 {1}회 회복합니다.", RecoveryScale, AttackCount);
+        Explanation = string.Format("최대체력 * {0} 만큼 {1}회 회복합니다.", RecoveryScale, AttackCount);
     }
     public Heal(string explanation)
     {
