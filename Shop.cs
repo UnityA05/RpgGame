@@ -7,9 +7,11 @@ public class Shop
 
     public Shop()
     {
+        shopList.Add(Program.itemMake.colthArmor);
         shopList.Add(Program.itemMake.chainVest);
         shopList.Add(Program.itemMake.brambleVest);
 
+        shopList.Add(Program.itemMake.longSword);
         shopList.Add(Program.itemMake.dagger);
         shopList.Add(Program.itemMake.bfSword);
 
@@ -141,7 +143,6 @@ public class Shop
                     Console.WriteLine("구매를 완료했습니다.");
                     Program.defaultPlayer.Gold -= shopList[inputNumber - 1].item_Gold;
                     Inventory.InvenAdd(shopList[inputNumber - 1]);
-                    shopList.Remove(shopList[inputNumber - 1]);
                     Thread.Sleep(1000);
                     DisplayShopBuy();
                 }
@@ -321,6 +322,7 @@ public class Shop
             Console.Write(Replace_Gold);
             Console.Write(Replace_Explain);
             Console.WriteLine();
+            Thread.Sleep(1);
             currentIndex++;
         }
         static int HowManyDigit(int j)

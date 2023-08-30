@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 public class itemCode
 {
-        public Item.Armor colthArmor = new Item.Armor("천 갑옷", 0, 1, 200, 0, 0, "가격이 싸서 인기가 많은 갑옷이다.");
+    public Item.Armor colthArmor = new Item.Armor("천 갑옷", 0, 1, 200, 0, 0, "가격이 싸서 인기가 많은 갑옷이다.");
     public Item.Armor chainVest = new Item.Armor("쇠사슬 조끼", 0, 4, 800, 0, 0, "방어력만 올라가는 갑옷이다.");
     public Item.Armor brambleVest = new Item.Armor("덤불 조끼", 0, 3, 800, 2, 0,"공격반사 대신 크리티컬 확률이 올라간다.");
 

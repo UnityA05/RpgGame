@@ -10,7 +10,7 @@ public class Item
     public int item_CriticalPer { get; set; }
     public int item_AvoidanceRate { get; set; }
     public string item_Discription { get; set; }
-
+    public string item_Job { get; set; }
     public Item()
     {
 
