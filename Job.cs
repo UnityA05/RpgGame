@@ -7,4 +7,10 @@ public interface Job
     int AdditionalMp { get; set; }
     float AdditionalCriticalPer { get; set; }
     float AdditionalAvoidanceRate { get; set; }
+    int HpPerLevel { get; set; }
+    int ATKPerLevel { get; set; }
+    int DEFPerLevel { get; set; }
+    int MpPerLevel { get; set; }
+    float CriticalPerLevel { get; set; }
+    float AvoidanceRatePerLevel { get; set; }
 }
