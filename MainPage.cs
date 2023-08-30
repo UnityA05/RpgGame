@@ -5,20 +5,31 @@ public class MainPage
 {
 	public void GameStart()
 	{
+		bool isGameExit = false;
+		while (isGameExit == false)
+		{
+			InMainPage(out isGameExit);
+		}
+	}
+
+	private void InMainPage(out bool isGameExit)
+	{
 		Console.Clear();
 		Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
 		Console.WriteLine("이제 전투를 시작하실 수 있습니다.\n");
 
-        ConsoleUI.Write(ConsoleColor.DarkRed, "0");
-        Console.WriteLine(". 인벤토리 보기");
-        ConsoleUI.Write(ConsoleColor.DarkRed, "1");
+		ConsoleUI.Write(ConsoleColor.DarkRed, "1");
 		Console.WriteLine(". 상태 보기");
 		ConsoleUI.Write(ConsoleColor.DarkRed, "2");
+		Console.WriteLine(". 인벤토리");
+		ConsoleUI.Write(ConsoleColor.DarkRed, "3");
+		Console.WriteLine(". 상점 입장");
+		ConsoleUI.Write(ConsoleColor.DarkRed, "4");
 		Console.WriteLine(". 전투 시작");
-        ConsoleUI.Write(ConsoleColor.DarkRed, "3");
-        Console.WriteLine(". 상점 방문\n");
+		ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+		Console.WriteLine(". 게임 종료\n");
 
-        Console.WriteLine("원하시는 행동을 입력해주세요.");
+		Console.WriteLine("원하시는 행동을 입력해주세요.");
 		ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
 		var currentCursor = Console.GetCursorPosition();
 		
@@ -27,7 +38,7 @@ public class MainPage
 		{
 			if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
 			{
-				if ( inputNumber == 0 || inputNumber == 1 || inputNumber == 2 || inputNumber == 3)
+				if ((0 <= inputNumber) && (inputNumber <= 4))
 					break ;
 			}
 			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
@@ -40,18 +51,26 @@ public class MainPage
 
 		switch (inputNumber)
 		{
-			case 0:
-				Inventory.DisplayInven();
-				break;
 			case 1:
 				Status();
 				break;
 			case 2:
+				Inventory inventory = new Inventory();
+				inventory.DisplayInven();
 				break;
 			case 3:
-				Shop.DisplayShop();
+				Shop shop = new();
+				shop.DisplayShop();
 				break;
+			case 4:
+				Dungeon dungeon = new Dungeon(Program.defaultPlayer);
+				dungeon.inDungeon();
+				break;
+			case 0:
+				isGameExit = true;
+				return;
 		}
+		isGameExit = false;
 	}
 
 	private void Status()
