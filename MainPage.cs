@@ -223,7 +223,11 @@ public class MainPage
 		ConsoleUI.Write(ConsoleColor.DarkRed, player.Health.ToString());
 		Console.WriteLine();
 
-		Console.Write("Gold : ");
+		Console.Write("MP     : ");
+		ConsoleUI.Write(ConsoleColor.DarkRed, player.Mp.ToString());
+		Console.WriteLine();
+
+		Console.Write("Gold   : ");
 		ConsoleUI.Write(ConsoleColor.DarkRed, player.Gold.ToString());
 		Console.WriteLine(" G\n");
 
