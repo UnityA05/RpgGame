@@ -7,6 +7,12 @@ public class Warrior : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
 
     public Warrior()
     {
@@ -17,7 +23,13 @@ public class Warrior : Job
         AdditionalMp = 0;
         AdditionalCriticalPer = 0;
         AdditionalAvoidanceRate = 0;
-    }
+        HpPerLevel = 10;
+        ATKPerLevel = 2;
+        DEFPerLevel = 1;
+        MpPerLevel = 1;
+        CriticalPerLevel = 0;
+        AvoidanceRatePerLevel = 0;
+}
 }
 
 public class Wizard : Job
@@ -29,6 +41,12 @@ public class Wizard : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Wizard()
     {
         Name = "Wizard";
@@ -38,6 +56,12 @@ public class Wizard : Job
         AdditionalMp = 50;
         AdditionalCriticalPer = 5;
         AdditionalAvoidanceRate = 0;
+        HpPerLevel = 0;
+        ATKPerLevel = 5;
+        DEFPerLevel = 0;
+        MpPerLevel = 10;
+        CriticalPerLevel = 1;
+        AvoidanceRatePerLevel = 0;
     }
 }
 public class Thief : Job
@@ -49,6 +73,12 @@ public class Thief : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Thief()
     {
         Name = "Thief";
@@ -58,6 +88,12 @@ public class Thief : Job
         AdditionalMp = 15;
         AdditionalCriticalPer = 5;
         AdditionalAvoidanceRate = 10;
+        HpPerLevel = 0;
+        ATKPerLevel = 1;
+        DEFPerLevel = 0;
+        MpPerLevel = 2;
+        CriticalPerLevel = 1;
+        AvoidanceRatePerLevel = 1;
     }
 }
 
@@ -70,6 +106,12 @@ public class Archer : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Archer()
     {
         Name = "Archer";
@@ -79,6 +121,12 @@ public class Archer : Job
         AdditionalMp = 10;
         AdditionalCriticalPer = 15;
         AdditionalAvoidanceRate = 0;
+        HpPerLevel = 0;
+        ATKPerLevel = 1;
+        DEFPerLevel = 0;
+        MpPerLevel = 2;
+        CriticalPerLevel = 2;
+        AvoidanceRatePerLevel = 0;
     }
 }
 public class Deprived : Job
@@ -90,6 +138,12 @@ public class Deprived : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Deprived()
     {
         Name = "Deprived";
@@ -99,5 +153,11 @@ public class Deprived : Job
         AdditionalMp = 0;
         AdditionalCriticalPer = 0;
         AdditionalAvoidanceRate = 0;
+        HpPerLevel = 0;
+        ATKPerLevel = 0;
+        DEFPerLevel = 0;
+        MpPerLevel = 0;
+        CriticalPerLevel = 0;
+        AvoidanceRatePerLevel = 0;
     }
 }
