@@ -92,7 +92,7 @@ public class Dungeon
         monster = new Monster[stageLevel+2];
         for(int i=0; i<(stageLevel+2); i++)
         {
-            int j = randomObj.Next(0,2);
+            int j = randomObj.Next(0,3);
             monster[i] = new Monster(mon[j], stageLevel);
         }
     }
@@ -153,7 +153,7 @@ public class Dungeon
             Console.WriteLine("스킬을 선택해주세요.");
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             currentCursor = Console.GetCursorPosition();
-            worngInput(currentCursor,1,player.Skills.Count);
+            worngInput(currentCursor,0,player.Skills.Count);
             if(inputNumber==0){break;}// 뒤로가기
             if(player.Mp<player.Skills[inputNumber-1].MpConsumption) // 마나부족
             {
@@ -164,14 +164,23 @@ public class Dungeon
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 {1}!", player.Name, player.Skills[inputNumber-1].Name);
 /////////////////////////
-            player.Mp -=player.Skills[inputNumber-1].MpConsumption;
+            
             if(player.Skills[inputNumber-1].DamageScale<=0) // 스킬 사용하기(힐이면)
             {
-                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health + (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale));
-                player.Health += (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale);
+                if(player.Health<player.MaxHealth)
+                {
+                    player.Mp -=player.Skills[inputNumber-1].MpConsumption;
+                    Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health + (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale));
+                    player.Health += (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale);
+                }
+                else
+                {
+                    Console.WriteLine("체력이 최대치입니다.");
+                }
             }
             else//(힐이 아니면)
             {
+                player.Mp -=player.Skills[inputNumber-1].MpConsumption;
                 if(player.Skills[inputNumber-1].Name.Equals("더블 스트라이크")) // 랜덤 공격
                 {
                     for(int i=0;i<player.Skills[inputNumber-1].TargetCount;i++)
