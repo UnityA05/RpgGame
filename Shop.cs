@@ -23,7 +23,7 @@ public class Shop
         shopList.Add(lowDefPotion);
     }
 
-    public static void DisplayShop()
+    public void DisplayShop()
     {
         Console.Clear();
         Console.WriteLine("상점");
@@ -77,7 +77,7 @@ public class Shop
         }
     }
 
-    public static void DisplayShopBuy()
+    public void DisplayShopBuy()
     {
         Console.Clear();
         Console.WriteLine("아이템 구매");
@@ -147,7 +147,7 @@ public class Shop
             }
         }
     }
-    public static void DisplayShopSell()
+    public void DisplayShopSell()
     {
         Console.Clear();
         Console.WriteLine("아이템 판매");
@@ -197,7 +197,7 @@ public class Shop
             DisplayShopSell();
         }
     }
-    public static void PrintList(List<Item> itemList)
+    public void PrintList(List<Item> itemList)
     {
         int currentIndex = 0;
 

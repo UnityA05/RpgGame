@@ -1,18 +1,19 @@
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using SprtaGame;
 
 public class MainPage
 {
-	public void GameStart()
+    public void GameStart()
 	{
 		bool isGameExit = false;
-		while (isGameExit == false)
+		
+        while (isGameExit == false)
 		{
 			InMainPage(out isGameExit);
 		}
 	}
-
-	private void InMainPage(out bool isGameExit)
+    private void InMainPage(out bool isGameExit)
 	{
 		Console.Clear();
 		Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
@@ -55,8 +56,8 @@ public class MainPage
 				Status();
 				break;
 			case 2:
-				Inventory inventory = new Inventory();
-				inventory.DisplayInven();
+                Inventory inventory = new Inventory();
+                inventory.DisplayInven();
 				break;
 			case 3:
 				Shop shop = new();
