@@ -10,12 +10,13 @@ public class Dungeon
     Monster[] monster; // 몬스터들
     int inputNumber = 0;
     Random randomObj = new Random(); // 랜덤변수
-    static int stageLevel=0; // 스테이지 레벨
+    static int stageLevel=1; // 스테이지 레벨
     int alldead=0; // 전부 죽었는지 판단
     public Dungeon(Player player) // 생성자
     {
+        string[] mon = new string[3]{"","SiegeMinion","Voidling"};
         this.player=player;
-        spawnMoster(); // 몬스터 스폰
+        spawnMoster(mon); // 몬스터 스폰
     }
 
     public void inDungeon() // 던전 입장
@@ -26,14 +27,14 @@ public class Dungeon
 
         for(int i=0; i<monster.Length; i++) // 몬스터 정보
         {
-            if(monster[i].Health>0)
+            if(monster[i].IsDead)
             {
-                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i+1,monster[i].level, monster[i].Name, monster[i].Health);
+                 Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
+                alldead++;
             }
             else
             {
-                Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
-                alldead++;
+                Console.WriteLine("{0}  Lv.{1} {2} HP {3}",i+1,monster[i].level, monster[i].Name, monster[i].Health);
             }
 
         }
@@ -42,11 +43,12 @@ public class Dungeon
         Console.WriteLine("Lv.{0} {1} ({2}) HP {3}",player.level, player.job, player.Name, player.Health);
         Console.WriteLine();
 
-        if(alldead==(stageLevel+3)) // 승리 판단
+        if(alldead==(stageLevel+2)) // 승리 판단
         {
             Console.Clear();
             Console.WriteLine("You Win!");
-            Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+3);
+            stageLevel++;
+            Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
             Console.WriteLine();
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
 		    Console.WriteLine(". 되돌아기기");
@@ -79,12 +81,15 @@ public class Dungeon
         battleStage(inputNumber); // 배틀시작 
     }
 
-    public void spawnMoster() // 몬스터 소환
+    public void spawnMoster(string[] mon) // 몬스터 소환
     {
-        monster = new Monster[stageLevel+3];
-        for(int i=0; i<(stageLevel+3); i++)
+        int j = 0;
+        monster = new Monster[stageLevel+2];
+        for(int i=0; i<(stageLevel+2); i++)
         {
-            monster[i] = new Monster();
+            if(j>=3){j=1;}
+            monster[i] = new Monster(mon[j], stageLevel);
+            j++;
         }
     }
 
@@ -98,7 +103,7 @@ public class Dungeon
             var currentCursor = Console.GetCursorPosition();
             worngInput(currentCursor,1,monster.Length);
 
-            if(monster[inputNumber-1].Health<=0)
+            if(monster[inputNumber-1].IsDead)
             {
                 Console.WriteLine("대상이 죽었습니다.");
                 battleStage(1);
@@ -108,10 +113,13 @@ public class Dungeon
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
             monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
-
+            if(monster[inputNumber-1].Health<=0)
+            {
+                monster[inputNumber-1].IsDead=true;
+            }
             for(int i=0;i<monster.Length;i++)
             {
-                if(monster[i].Health>0)
+                if(!monster[i].IsDead)
                 {
                     player.Health=battleCalculate(monster[i].Damage, player);
                 }
@@ -140,13 +148,16 @@ public class Dungeon
             break;
 
             case 3:
+            
             break;
 
             case 4:
+
             break;
         }
+        if(player.Health<=0){player.IsDead=true;}
         Thread.Sleep(1000);
-        if(player.Health<=0)
+        if(player.IsDead)
         {
             Console.WriteLine("You Lose");
             mainPage.GameStart(); // 졌으니 쫓겨난다.
@@ -163,17 +174,17 @@ public class Dungeon
     {
         Console.WriteLine();
         int lastDamage;
-        int random1 =randomObj.Next(10) ;
-        float random2 =randomObj.Next(10) ;
+        int random1 =randomObj.Next(100) ;
+        float random2 =randomObj.Next(100) ;
         Thread.Sleep(1000);
-        if(random1>=9) // 회피
+        if(random1>=(90-character.AvoidanceRate)) // 회피
         {
             lastDamage = 0;
             Console.WriteLine("Lv.{0} {1}을(를) 공격했지만 아무일도 일어나지 않았습니다.",character.level, character.Name);
         }
         else
         {
-            if(random2>=8.5) // 치명타
+            if(random2>=(85-character.CriticalPer)) // 치명타
                 {
                     lastDamage = damage*100/60;
                     Console.WriteLine("Lv.{0} {1}을(를) 맞췄습니다. [데미지 : {2}] - 치명타 공격!!", character.level, character.Name, lastDamage);
