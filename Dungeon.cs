@@ -14,26 +14,28 @@ public class Dungeon
     int inputNumber = 0; // 입력 번호
     Random randomObj = new Random(); // 랜덤변수
     static int stageLevel=1; // 스테이지 레벨
+    int beforeHp = 0;
     int alldead=0; // 전부 죽었는지 판단
     public Dungeon(Player player) // 생성자
     {
         string[] mon = new string[3]{"","SiegeMinion","Voidling"};
         this.player=player;
         spawnMoster(mon); // 몬스터 스폰
+        beforeHp=player.Health; // 이전 체력
     }
 
     public void inDungeon() // 던전 입장
     {
         Console.Clear();
 		Console.WriteLine("Battle!");
-        alldead=0;
-
+        
         for(int i=0; i<monster.Length; i++) // 몬스터 정보
         {
             if(monster[i].IsDead)
             {
-                 Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
-                alldead++;
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
+                Console.ResetColor();
             }
             else
             {
@@ -51,6 +53,7 @@ public class Dungeon
             Console.Clear();
             Console.WriteLine("You Win!");
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
+            Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job, player.Name, beforeHp,player.Health);
             stageLevel++;
             Console.WriteLine();
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
@@ -63,7 +66,6 @@ public class Dungeon
 			    case 0:
                 //돌아가기
                 return;
-				break;
 		    }
         }
 //행동 선택
@@ -115,8 +117,13 @@ public class Dungeon
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
             monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
+            for(int i =0; i<monster.Length;i++)
+            {
+                if(monster[i].IsDead){alldead++;}
+            }
             if(alldead<stageLevel+2)
             {
+                alldead=0;
                 mosterAtteck(0);
             }
             break;
@@ -125,8 +132,13 @@ public class Dungeon
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 방어!", player.Name);
             Thread.Sleep(1000);
+            for(int i =0; i<monster.Length;i++)
+            {
+                if(monster[i].IsDead){alldead++;}
+            }
             if(alldead<stageLevel+2)
             {
+                alldead=0;
                 mosterAtteck(1);
             }
             break;
@@ -136,18 +148,27 @@ public class Dungeon
             {
                 Console.WriteLine("{0}. {1}: {2}  -MP{3}  현재MP{4}", i, player.Skills[i-1].Name, player.Skills[i-1].Explanation, player.Skills[i-1].MpConsumption, player.Mp);
             }
+            ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+		    Console.WriteLine(". 되돌아기기");
             Console.WriteLine("스킬을 선택해주세요.");
 		    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
             currentCursor = Console.GetCursorPosition();
             worngInput(currentCursor,1,player.Skills.Count);
+            if(inputNumber==0){break;}// 뒤로가기
+            if(player.Mp<player.Skills[inputNumber-1].MpConsumption) // 마나부족
+            {
+                Console.WriteLine("마나부족");
+                Thread.Sleep(1000);
+                battleStage(3);
+            }
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 {1}!", player.Name, player.Skills[inputNumber-1].Name);
 /////////////////////////
             player.Mp -=player.Skills[inputNumber-1].MpConsumption;
             if(player.Skills[inputNumber-1].DamageScale<=0) // 스킬 사용하기(힐이면)
             {
-                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health+(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100));
-                player.Health+=(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100);
+                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health + (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale));
+                player.Health += (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale);
             }
             else//(힐이 아니면)
             {
@@ -169,14 +190,20 @@ public class Dungeon
                 else
                 {
                     int skills = inputNumber-1;
+                    bool check = true;
                     int[] count = new int[player.Skills[inputNumber-1].TargetCount];
                     for(int i=0; i<count.Length;i++)
                     {
-                        Console.WriteLine("대상을 선택해주세요.");
-		                ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
-                        currentCursor = Console.GetCursorPosition();
-                        worngInput(currentCursor,1,monster.Length);
-                        count[i]=inputNumber-1;
+                        check=true;
+                        while(check)
+                        {
+                            Console.WriteLine("대상을 선택해주세요.");
+		                    ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+                            currentCursor = Console.GetCursorPosition();
+                            worngInput(currentCursor,1,monster.Length);
+                            if(monster[inputNumber-1].IsDead){Console.WriteLine("죽은상대 다시 선택해주세요.");}
+                            else{count[i]=inputNumber-1;check=false;}
+                        }
                     }
                     for(int i=0; i<count.Length; i++)
                     {
@@ -189,8 +216,13 @@ public class Dungeon
             }
 //////////////////////////////////////////////
             Thread.Sleep(1000);
+            for(int i =0; i<monster.Length;i++)
+            {
+                if(monster[i].IsDead){alldead++;}
+            }
             if(alldead<stageLevel+2)
             {
+                alldead=0;
                 mosterAtteck(0);
             }
             break;
@@ -263,7 +295,7 @@ public class Dungeon
         int lastDamage;
         int random1 =randomObj.Next(100) ;
         float random2 =randomObj.Next(100) ;
-        Thread.Sleep(1000);
+        
         if(random1>=(100-character.AvoidanceRate)) // 회피
         {
             lastDamage = 0;
