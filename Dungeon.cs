@@ -11,7 +11,7 @@ public class Dungeon
     MainPage mainPage = new MainPage();
     Player player; // 플레이어
     Monster[] monster; // 몬스터들
-    int inputNumber = 0;
+    int inputNumber = 0; // 입력 번호
     Random randomObj = new Random(); // 랜덤변수
     static int stageLevel=1; // 스테이지 레벨
     int alldead=0; // 전부 죽었는지 판단
@@ -62,7 +62,7 @@ public class Dungeon
 		    {
 			    case 0:
                 //돌아가기
-
+                return;
 				break;
 		    }
         }
@@ -196,7 +196,7 @@ public class Dungeon
         if(player.IsDead)
         {
             Console.WriteLine("You Lose");
-            mainPage.GameStart(); // 졌으니 쫓겨난다.
+            return;
         }
         else
         {
