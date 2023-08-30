@@ -167,8 +167,8 @@ public class Dungeon
             player.Mp -=player.Skills[inputNumber-1].MpConsumption;
             if(player.Skills[inputNumber-1].DamageScale<=0) // 스킬 사용하기(힐이면)
             {
-                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health+(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100));
-                player.Health+=(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100);
+                Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health + (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale));
+                player.Health += (int)(player.MaxHealth * player.Skills[inputNumber - 1].RecoveryScale);
             }
             else//(힐이 아니면)
             {
