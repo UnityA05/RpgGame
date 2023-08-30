@@ -7,7 +7,12 @@ public class Minion : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
-
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Minion()
     {
         Name = "Minion";
@@ -29,6 +34,12 @@ public class SiegeMinion : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public SiegeMinion()
     {
         Name = "SiegeMinion";
@@ -49,6 +60,12 @@ public class Voidling : Job
     public int AdditionalMp { get; set; }
     public float AdditionalCriticalPer { get; set; }
     public float AdditionalAvoidanceRate { get; set; }
+    public int HpPerLevel { get; set; }
+    public int ATKPerLevel { get; set; }
+    public int DEFPerLevel { get; set; }
+    public int MpPerLevel { get; set; }
+    public float CriticalPerLevel { get; set; }
+    public float AvoidanceRatePerLevel { get; set; }
     public Voidling()
     {
         Name = "Voidling";
