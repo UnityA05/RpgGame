@@ -204,6 +204,8 @@ public class Dungeon
         if(player.IsDead)
         {
             Console.WriteLine("You Lose");
+            player.Health=player.MaxHealth;
+            player.Mp=player.MaxMp;
             return;
         }
         else
