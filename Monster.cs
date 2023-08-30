@@ -241,12 +241,12 @@ public class Monster : Character
 
     private void SetStatByLevel(int level)
     {
-        float correction = 1 + (float)level * (float)0.1;
-        MaxHealth = (int)(MaxHealth * correction);
+        float correction = 1 + (float)(level - 1) * (float)0.1;
+        MaxHealth = (int)((15 + job.AdditionalHp) * correction);
         Health = MaxHealth;
-        MaxMp = (int)(MaxMp * correction);
+        MaxMp = (int)((20 + job.AdditionalMp) * correction);
         Mp = MaxMp;
-        Damage = (int)(Damage * correction);
-        Defense = (int)(Defense * correction);
+        Damage = (int)((level + job.AdditionalATK) * correction);
+        Defense = (int)((level + job.AdditionalDEF) * correction);
     }
 }
