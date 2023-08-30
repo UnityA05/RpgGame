@@ -14,12 +14,14 @@ public class Dungeon
     int inputNumber = 0; // 입력 번호
     Random randomObj = new Random(); // 랜덤변수
     static int stageLevel=1; // 스테이지 레벨
+    int beforeHp = 0;
     int alldead=0; // 전부 죽었는지 판단
     public Dungeon(Player player) // 생성자
     {
         string[] mon = new string[3]{"","SiegeMinion","Voidling"};
         this.player=player;
         spawnMoster(mon); // 몬스터 스폰
+        beforeHp=player.Health; // 이전 체력
     }
 
     public void inDungeon() // 던전 입장
@@ -31,7 +33,9 @@ public class Dungeon
         {
             if(monster[i].IsDead)
             {
+                Console.ForegroundColor = ConsoleColor.Gray;
                  Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
+                Console.ResetColor();
             }
             else
             {
@@ -49,6 +53,7 @@ public class Dungeon
             Console.Clear();
             Console.WriteLine("You Win!");
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
+            Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job, player.Name, beforeHp,player.Health);
             stageLevel++;
             Console.WriteLine();
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
