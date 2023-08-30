@@ -9,12 +9,22 @@ using static System.Net.Mime.MediaTypeNames;
 /// </summary> 
 public class Monster : Character
 {
+    private int _level;
     public string Name { get; set; }
     public int Health { get; set; }
     public int Damage { get; set; }
     public int Defense { get; set; }
     public Job job { get; set; }
-    public int level { get; set; }
+    // public int level { get; set; }
+    public int level
+    {
+        get { return _level; }
+        set
+        {
+            _level = value;
+            SetStatByLevel(_level);
+        }
+    }
     public int Gold { get; set; }
     public int Mp { get; set; }
     public bool IsDead { get; set; }
@@ -227,5 +237,16 @@ public class Monster : Character
             return true;
         }
         return false;
+    }
+
+    private void SetStatByLevel(int level)
+    {
+        float correction = 1 + (float)(level - 1) * (float)0.1;
+        MaxHealth = (int)((15 + job.AdditionalHp) * correction);
+        Health = MaxHealth;
+        MaxMp = (int)((20 + job.AdditionalMp) * correction);
+        Mp = MaxMp;
+        Damage = (int)((level + job.AdditionalATK) * correction);
+        Defense = (int)((level + job.AdditionalDEF) * correction);
     }
 }
