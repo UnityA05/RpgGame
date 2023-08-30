@@ -35,7 +35,7 @@ public class SiegeMinion : Job
         AdditionalHp = 50;
         AdditionalATK = 5;
         AdditionalDEF = 10;
-        AdditionalMp = 0;
+        AdditionalMp = 30;
         AdditionalCriticalPer = 0;
         AdditionalAvoidanceRate = 0;
     }
@@ -55,7 +55,7 @@ public class Voidling : Job
         AdditionalHp = 10;
         AdditionalATK = 10;
         AdditionalDEF = 0;
-        AdditionalMp = 0;
+        AdditionalMp = 10;
         AdditionalCriticalPer = 5;
         AdditionalAvoidanceRate = 5;
     }
