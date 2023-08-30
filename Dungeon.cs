@@ -62,7 +62,7 @@ public class Dungeon
 		    {
 			    case 0:
                 //돌아가기
-
+                return;
 				break;
 		    }
         }
@@ -196,7 +196,7 @@ public class Dungeon
         if(player.IsDead)
         {
             Console.WriteLine("You Lose");
-            mainPage.GameStart(); // 졌으니 쫓겨난다.
+            return;
         }
         else
         {
