@@ -4,12 +4,14 @@ public interface Character // 캐릭터 인터페이스
     int Health { get; set; }
     int Damage { get; set; }
     int Defense { get; set; }
-    Job job {get; set;}
-    int level{get; set;}
+    Job job { get; set; }
+    int level { get; set; }
     int Gold { get; set; }
-    int Mp { get; set; } 
+    int Mp { get; set; }
     bool IsDead { get; set; }
     float CriticalPer { get; set; }
     float AvoidanceRate { get; set; }
-
+    List<Skill> Skills { get; set; }
+    int MaxHealth { get; set; }
+    int MaxMp { get; set; }
 }
