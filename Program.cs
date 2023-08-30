@@ -3,6 +3,7 @@
     internal class Program
     {
         public static Player defaultPlayer;
+        public static itemCode itemMake = new();
         public static Shop shop = new();
         public static Inventory inventory = new();
         static void Main(string[] args)

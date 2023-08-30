@@ -1,5 +1,7 @@
 using SprtaGame;
+using System.Data;
 using System.Runtime.InteropServices.JavaScript;
+using static Item;
 
 public class Inventory
 {
@@ -7,26 +9,11 @@ public class Inventory
     //아이템 리스트에서 장착중인 인덱스 번호들
     public static int exArmorNum = -1;
     public static int exWeaponNum = -1;
+    public static int exAccessNum = -1;
     public Inventory()
     {
-
-        Item steelArmor = new Item("무쇠갑옷", 0, 5, 500, "무쇠로 만들어져 튼튼한 갑옷입니다.");
-        Item leatherArmor = new Item("가죽갑옷", 0, 2, 200, "소가죽으로 만들어진 낡은 가죽갑옷.");
-
-        Item oldSword = new Item("낡은 검", 2, 0, 800, "쉽게 볼 수 있는 낡은 검입니다.");
-        Item gladius = new Item("글라디우스", 6, 0, 1000, "찌르기에 특화된 사정거리 짧은 한손검.");
-
-        Item.Potion lowHpPotion = new Item.Potion("하급 체력 포션", 0, 0, 400, 30, "초보 모험자들이 애용하는 물약.");
-        Item.Potion lowAtkPotion = new Item.Potion("하급 힘 포션", 2, 0, 300, 0, "몬스터들을 재료로 고아낸 힘 물약.");
-        Item.Potion lowDefPotion = new Item.Potion("하급 방어력 포션", 0, 2, 200, 0, "몬스터들의 갑각을 재료로 고아낸 물약.");
-
-        playerInven.Add(steelArmor);
-        playerInven.Add(leatherArmor);
-        playerInven.Add(oldSword);
-        playerInven.Add(gladius);
-        playerInven.Add(lowHpPotion);
-        playerInven.Add(lowAtkPotion);
-        playerInven.Add(lowDefPotion);
+        playerInven.Add(Program.itemMake.colthArmor);
+        playerInven.Add(Program.itemMake.longSword);
     }
     public void DisplayInven()
     {
@@ -37,99 +24,8 @@ public class Inventory
         Console.WriteLine();
         Console.WriteLine("[아이템 목록]");
 
-        int invenLength = playerInven.Count();
-        int currentIndex = 0;
+        PrintInven();
 
-        while (currentIndex < invenLength)
-        {
-            if (playerInven[currentIndex].GetType() == typeof(Item.Potion)) //물약이라면
-            {
-                //출력 칸 정렬
-                string InvenStr_Name = "          |";
-                string InvenStr_Effect = "          |";
-                string InvenStr_Explain = "                                                  |";
-
-                string Replace_Name = string.Empty;
-                string Replace_Effect = string.Empty;
-                string Replace_Explain = string.Empty;
-
-                //삽입될 만큼 정렬 문자열에서 빈칸 지우기
-                int nameLength = playerInven[currentIndex].item_Name.Count();
-                Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                            .Insert(0, playerInven[currentIndex].item_Name);
-
-                if (playerInven[currentIndex].item_Health > 0)
-                {
-                    //회복 물약
-
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;    // + 6은 문자열 "체력회복 +"
-                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "체력회복 +" + Convert.ToString(playerInven[currentIndex].item_Health));
-                }
-                else if (playerInven[currentIndex].item_Damage == 0)
-                {
-                    //방어력 물약
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
-                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
-                }
-                else
-                {
-                    //공격력 물약
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
-                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage));
-                }
-
-                int explainLength = playerInven[currentIndex].item_Discription.Length;
-                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                  .Insert(0, playerInven[currentIndex].item_Discription);
-
-                Console.Write("- ");
-                Console.Write(Replace_Name);
-                Console.Write(Replace_Effect);
-                Console.Write(Replace_Explain);
-                Console.WriteLine();
-                currentIndex++;
-            }
-            else
-            {
-                string InvenStr_Name = "          |";
-                string InvenStr_Effect = "          |";
-                string InvenStr_Explain = "                                                            |";
-                string Replace_Name = string.Empty;
-                string Replace_Effect = string.Empty;
-                string Replace_Explain = string.Empty;
-
-                int nameLength = playerInven[currentIndex].item_Name.Count();
-                Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                            .Insert(0, playerInven[currentIndex].item_Name);
-
-                if (playerInven[currentIndex].item_Damage == 0)
-                {
-                    //armor
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
-                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
-                }
-                else
-                {
-                    //weapon
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
-                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage));
-                }
-                int explainLength = playerInven[currentIndex].item_Discription.Length;
-                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                  .Insert(0, playerInven[currentIndex].item_Discription);
-                Console.Write("- ");
-                Console.Write(Replace_Name);
-                Console.Write(Replace_Effect);
-                Console.Write(Replace_Explain);
-                Console.WriteLine();
-                currentIndex++;
-            }
-        }
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
@@ -182,52 +78,18 @@ public class Inventory
         Console.WriteLine();
         Console.WriteLine("[아이템 목록]");
 
-        int currentIndex = 0;
+        List<Item> wearable = new List<Item>();
 
-        while (currentIndex < playerInven.Count())
+        foreach (Item wear in playerInven)
         {
-            if (playerInven[currentIndex].GetType() == typeof(Item.Potion))
+            if (wear.GetType() != typeof(Item.Potion))
             {
-                currentIndex++;
-                continue;
+                wearable.Add(wear);
             }
-            string InvenStr_Name = "          |";
-            string InvenStr_Effect = "          |";
-            string InvenStr_Explain = "                                                            |";
-            string Replace_Name = string.Empty;
-            string Replace_Effect = string.Empty;
-            string Replace_Explain = string.Empty;
-
-            int nameLength = playerInven[currentIndex].item_Name.Count();
-            Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                        .Insert(0, playerInven[currentIndex].item_Name);
-
-            if (playerInven[currentIndex].item_Damage == 0)
-            {
-                //armor
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
-            }
-            else
-            {
-                //weapon
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage));
-            }
-            int explainLength = playerInven[currentIndex].item_Discription.Length;
-            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                              .Insert(0, playerInven[currentIndex].item_Discription);
-
-            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
-            Console.Write(" - ");
-            Console.Write(Replace_Name);
-            Console.Write(Replace_Effect);
-            Console.Write(Replace_Explain);
-            Console.WriteLine();
-            currentIndex++;
         }
+
+        PrintEquip(wearable);
+
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
@@ -246,14 +108,9 @@ public class Inventory
         {
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
-                if ((inputNumber >= 0) && (inputNumber <= playerInven.Count()))
+                if ((inputNumber >= 0) && (inputNumber <= wearable.Count()))
                 {
-                    if (inputNumber != 0 && playerInven[inputNumber - 1].GetType() == typeof(Item.Potion))
-                    {
-
-                    }
-                    else
-                        break;
+                    break;
                 }
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
@@ -270,7 +127,9 @@ public class Inventory
         }
         else
         {
-            Equip(inputNumber - 1);
+            int index = playerInven.FindIndex(x => x.item_Name.Equals(wearable[inputNumber - 1].item_Name));
+            Equip(index);
+            wearable.Clear();
             DisplayEquip();
         }
     }
@@ -292,57 +151,7 @@ public class Inventory
             }
         }
 
-        int currentIndex = 0;
-        while (currentIndex < potions.Count())
-        {
-            string InvenStr_Name = "          |";
-            string InvenStr_Effect = "          |";
-            string InvenStr_Explain = "                                                  |";
-
-            string Replace_Name = string.Empty;
-            string Replace_Effect = string.Empty;
-            string Replace_Explain = string.Empty;
-
-            //삽입될 만큼 정렬 문자열에서 빈칸 지우기
-            int nameLength = potions[currentIndex].item_Name.Count();
-            Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                        .Insert(0, potions[currentIndex].item_Name);
-
-            if (potions[currentIndex].item_Health > 0)
-            {
-                //회복 물약
-
-                int effectLength = HowManyDigit(potions[currentIndex].item_Health) + 6;    // + 6은 문자열 "체력회복 +"
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, "체력회복 +" + Convert.ToString(potions[currentIndex].item_Health));
-            }
-            else if (potions[currentIndex].item_Damage == 0)
-            {
-                //방어력 물약
-                int effectLength = HowManyDigit(potions[currentIndex].item_Defense) + 6;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 방어력 +" + Convert.ToString(potions[currentIndex].item_Defense));
-            }
-            else
-            {
-                //공격력 물약
-                int effectLength = HowManyDigit(potions[currentIndex].item_Damage) + 6;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, " 공격력 +" + Convert.ToString(potions[currentIndex].item_Damage));
-            }
-
-            int explainLength = potions[currentIndex].item_Discription.Length;
-            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                              .Insert(0, potions[currentIndex].item_Discription);
-
-            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
-            Console.Write("- ");
-            Console.Write(Replace_Name);
-            Console.Write(Replace_Effect);
-            Console.Write(Replace_Explain);
-            Console.WriteLine();
-            currentIndex++;
-        }
+        PrintPotion(potions);
 
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
@@ -387,22 +196,11 @@ public class Inventory
     }
     public void InvenUse(Item item)
     {
-        if (item.item_Health > 0)
-        {
-            Program.defaultPlayer.Health += 30;
-            if (Program.defaultPlayer.Health > 100)
-            {
-                Program.defaultPlayer.Health = 100;
-            }
-        }
-        else if (item.item_Damage > 0)
-        {
-            Program.defaultPlayer.Damage += item.item_Damage;
-        }
-        else if (item.item_Defense > 0)
-        {
-            Program.defaultPlayer.Defense += item.item_Defense;
-        }
+        Program.defaultPlayer.Health += item.item_Health;
+        Program.defaultPlayer.Mp += item.item_Mp;
+
+        //최대 체력과 최대 마력 한정
+
         playerInven.Remove(item);
     }
     public void Equip(int i)
@@ -414,46 +212,77 @@ public class Inventory
             //[E] 제거
             playerInven[i].item_Name = playerInven[i].item_Name.Replace("[E]", "");
 
-            if (playerInven[i].item_Damage == 0)    //갑옷 해제
+            if (playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 해제
             {
-                Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - playerInven[i].item_Defense;
+                Program.defaultPlayer.Defense -= -playerInven[i].item_Defense;
+                Program.defaultPlayer.CriticalPer -= playerInven[i].item_CriticalPer;
                 exArmorNum = -1;
             }
-            else if (playerInven[i].item_Defense == 0)  //무기 해제
+            else if (playerInven[i].GetType() == typeof(Item.Weapon))  //무기 해제
             {
-                Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - playerInven[i].item_Damage;
+                Program.defaultPlayer.Damage -= playerInven[i].item_Damage;
+                Program.defaultPlayer.AvoidanceRate -= playerInven[i].item_AvoidanceRate;
                 exWeaponNum = -1;
+            }
+            else if (playerInven[i].GetType() == typeof(Item.Accessories))
+            {
+                Program.defaultPlayer.Health -= playerInven[i].item_Health;
+                Program.defaultPlayer.Mp -= playerInven[i].item_Mp;
+                Program.defaultPlayer.CriticalPer -= playerInven[i].item_CriticalPer;
+                exAccessNum = -1;
             }
         }
         else
         {
             playerInven[i].item_Name = "[E]" + playerInven[i].item_Name;
-            if (playerInven[i].item_Damage == 0)    //갑옷 장착
+            if (playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 장착
             {
                 if (exArmorNum == -1)    //기존 장착한 장비가 없음.
                 {
                     Program.defaultPlayer.Defense += playerInven[i].item_Defense;
+                    Program.defaultPlayer.CriticalPer += playerInven[i].item_CriticalPer;
                     exArmorNum = i;
                 }
                 else                    //기존 장착한 장비가 있음.
                 {
                     playerInven[exArmorNum].item_Name = playerInven[exArmorNum].item_Name.Replace("[E]", "");
                     Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
+                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer - playerInven[exArmorNum].item_CriticalPer + playerInven[i].item_CriticalPer;
                     exArmorNum = i;
                 }
             }
-            else if (playerInven[i].item_Defense == 0)   //무기 장착
+            else if (playerInven[i].GetType() == typeof(Item.Weapon))   //무기 장착
             {
                 if (exWeaponNum == -1)
                 {
                     Program.defaultPlayer.Damage += playerInven[i].item_Damage;
+                    Program.defaultPlayer.AvoidanceRate += playerInven[i].item_AvoidanceRate;
                     exWeaponNum = i;
                 }
                 else
                 {
                     playerInven[exWeaponNum].item_Name = playerInven[exWeaponNum].item_Name.Replace("[E]", "");
                     Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - playerInven[exWeaponNum].item_Damage + playerInven[i].item_Damage;
+                    Program.defaultPlayer.AvoidanceRate = Program.defaultPlayer.AvoidanceRate - playerInven[exWeaponNum].item_AvoidanceRate + playerInven[i].item_AvoidanceRate;
                     exWeaponNum = i;
+                }
+            }
+            else if (playerInven[i].GetType() == typeof(Item.Accessories))
+            {
+                if (exAccessNum == -1)
+                {
+                    Program.defaultPlayer.Health += playerInven[i].item_Health;
+                    Program.defaultPlayer.Mp += playerInven[i].item_Mp;
+                    Program.defaultPlayer.CriticalPer += playerInven[i].item_CriticalPer;
+                    exAccessNum = i;
+                }
+                else
+                {
+                    playerInven[exAccessNum].item_Name = playerInven[exAccessNum].item_Name.Replace("[E]", "");
+                    Program.defaultPlayer.Health = Program.defaultPlayer.Health + playerInven[i].item_Health - playerInven[exAccessNum].item_Health;
+                    Program.defaultPlayer.Mp = Program.defaultPlayer.Mp + playerInven[i].item_Mp - playerInven[exAccessNum].item_Mp;
+                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer + playerInven[i].item_CriticalPer - playerInven[i].item_CriticalPer;
+                    exAccessNum = i;
                 }
             }
         }
@@ -469,6 +298,245 @@ public class Inventory
                 return (i + 1);
             }
             i++;
+        }
+    }
+    private void PrintInven()
+    {
+        int currentIndex = 0;
+        while (currentIndex < playerInven.Count())
+        {
+            //출력 칸 정렬
+            string InvenStr_Name = "            |";
+            string InvenStr_Effect = "                    |";
+            string InvenStr_Explain = "                                                  |";
+
+            string Replace_Name = string.Empty;
+            string Replace_Effect = string.Empty;
+            string Replace_Explain = string.Empty;
+
+            //삽입될 만큼 정렬 문자열에서 빈칸 지우기
+            int nameLength = playerInven[currentIndex].item_Name.Count();
+            Replace_Name = InvenStr_Name.Remove(0, nameLength)
+                                        .Insert(0, playerInven[currentIndex].item_Name);
+
+            if (playerInven[currentIndex].GetType() == typeof(Item.Potion)) //물약이라면
+            {
+                if (playerInven[currentIndex].item_Health > 0 && playerInven[currentIndex].item_Mp == 0)
+                {
+                    //회복 물약
+
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력회복 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                }
+                else
+                {
+                    //부패 물약
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_Mp) + 8;
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                }
+
+            }
+            else if (playerInven[currentIndex].GetType() == typeof(Item.Accessories))
+            {
+                if (playerInven[currentIndex].item_Health > 0)
+                {
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                }
+                else if (playerInven[currentIndex].item_Mp > 0)
+                {
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                }
+                else
+                {
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(playerInven[currentIndex].item_CriticalPer));
+                }
+            }
+            else
+            {
+                if (playerInven[currentIndex].GetType() == typeof(Item.Armor))
+                {
+                    //armor
+                    if (playerInven[currentIndex].item_CriticalPer > 0)
+                    {
+                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + HowManyDigit(playerInven[currentIndex].item_CriticalPer) + 6 + 7;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense + " 치명타율 +" + Convert.ToString(playerInven[currentIndex].item_CriticalPer)));
+                    }
+                    else
+                    {
+                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
+                    }
+                }
+                else
+                {
+                    //weapon
+                    if (playerInven[currentIndex].item_AvoidanceRate > 0)
+                    {
+                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + HowManyDigit(playerInven[currentIndex].item_AvoidanceRate) + 6 + 5;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage) + " 회피 +" + Convert.ToString(playerInven[currentIndex].item_AvoidanceRate));
+                    }
+                    else
+                    {
+                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage));
+                    }
+                }
+            }
+
+            int explainLength = playerInven[currentIndex].item_Discription.Length;
+            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                              .Insert(0, playerInven[currentIndex].item_Discription);
+            Console.Write("- ");
+            Console.Write(Replace_Name);
+            Console.Write(Replace_Effect);
+            Console.Write(Replace_Explain);
+            Console.WriteLine();
+            currentIndex++;
+        }
+    }
+    private void PrintPotion(List<Item> potions)
+    {
+        int currentIndex = 0;
+        while (currentIndex < potions.Count())
+        {
+            string InvenStr_Name = "            |";
+            string InvenStr_Effect = "                    |";
+            string InvenStr_Explain = "                                                  |";
+
+            string Replace_Name = string.Empty;
+            string Replace_Effect = string.Empty;
+            string Replace_Explain = string.Empty;
+
+            //삽입될 만큼 정렬 문자열에서 빈칸 지우기
+            int nameLength = potions[currentIndex].item_Name.Count();
+            Replace_Name = InvenStr_Name.Remove(0, nameLength)
+                                        .Insert(0, potions[currentIndex].item_Name);
+
+            if (playerInven[currentIndex].item_Mp > 0)
+            {
+                //부패 물약
+                int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_Mp) + 8;
+                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+            }
+            else
+            {
+                //체력 물약
+                int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;
+                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                
+            }
+
+            int explainLength = potions[currentIndex].item_Discription.Length;
+            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                              .Insert(0, potions[currentIndex].item_Discription);
+
+            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
+            Console.Write("- ");
+            Console.Write(Replace_Name);
+            Console.Write(Replace_Effect);
+            Console.Write(Replace_Explain);
+            Console.WriteLine();
+            currentIndex++;
+        }
+    }
+    private void PrintEquip(List<Item> items)
+    {
+        int currentIndex = 0;
+
+        while (currentIndex < items.Count())
+        {
+            string InvenStr_Name = "            |";
+            string InvenStr_Effect = "                    |";
+            string InvenStr_Explain = "                                                  |";
+
+            string Replace_Name = string.Empty;
+            string Replace_Effect = string.Empty;
+            string Replace_Explain = string.Empty;
+
+            int nameLength = items[currentIndex].item_Name.Count();
+            Replace_Name = InvenStr_Name.Remove(0, nameLength)
+                                        .Insert(0, items[currentIndex].item_Name);
+
+            if (items[currentIndex].GetType() == typeof(Item.Accessories))
+            {
+                if (items[currentIndex].item_Health > 0)
+                {
+                    int effectLength = HowManyDigit(items[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(items[currentIndex].item_Health));
+                }
+                else if (items[currentIndex].item_Mp > 0)
+                {
+                    int effectLength = HowManyDigit(items[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "마력 +" + Convert.ToString(items[currentIndex].item_Mp));
+                }
+                else
+                {
+                    int effectLength = HowManyDigit(items[currentIndex].item_Health) + HowManyDigit(items[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(items[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(items[currentIndex].item_CriticalPer));
+                }
+            }
+            else
+            {
+                if (items[currentIndex].GetType() == typeof(Item.Armor))
+                {
+                    //armor
+                    if (items[currentIndex].item_CriticalPer > 0)
+                    {
+                        int effectLength = HowManyDigit(items[currentIndex].item_Defense) + HowManyDigit(items[currentIndex].item_CriticalPer) + 6 + 7;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, " 방어력 +" + Convert.ToString(items[currentIndex].item_Defense + " 치명타율 +" + Convert.ToString(items[currentIndex].item_CriticalPer)));
+                    }
+                    else
+                    {
+                        int effectLength = HowManyDigit(items[currentIndex].item_Defense) + 6;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 방어력 +" + Convert.ToString(items[currentIndex].item_Defense));
+                    }
+                }
+                else
+                {
+                    //weapon
+                    if (items[currentIndex].item_AvoidanceRate > 0)
+                    {
+                        int effectLength = HowManyDigit(items[currentIndex].item_Damage) + HowManyDigit(items[currentIndex].item_AvoidanceRate) + 6 + 5;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 공격력 +" + Convert.ToString(items[currentIndex].item_Damage) + " 회피 +" + Convert.ToString(items[currentIndex].item_AvoidanceRate));
+                    }
+                    else
+                    {
+                        int effectLength = HowManyDigit(items[currentIndex].item_Damage) + 6;
+                        Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                        .Insert(0, " 공격력 +" + Convert.ToString(items[currentIndex].item_Damage));
+                    }
+                }
+                int explainLength = items[currentIndex].item_Discription.Length;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, items[currentIndex].item_Discription);
+            }
+            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
+            Console.Write(" - ");
+            Console.Write(Replace_Name);
+            Console.Write(Replace_Effect);
+            Console.Write(Replace_Explain);
+            Console.WriteLine();
+            currentIndex++;
         }
     }
 }
