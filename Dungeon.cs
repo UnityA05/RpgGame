@@ -33,8 +33,8 @@ public class Dungeon
         {
             if(monster[i].IsDead)
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
-                 Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("{0}  Lv.{1} {2} Dead",i+1,monster[i].level, monster[i].Name);
                 Console.ResetColor();
             }
             else
