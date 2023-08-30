@@ -87,13 +87,11 @@ public class Dungeon
 
     public void spawnMoster(string[] mon) // 몬스터 소환
     {
-        int j = 0;
         monster = new Monster[stageLevel+2];
         for(int i=0; i<(stageLevel+2); i++)
         {
-            if(j>=3){j=1;}
+            int j = randomObj.Next(0,2);
             monster[i] = new Monster(mon[j], stageLevel);
-            j++;
         }
     }
 
@@ -117,14 +115,20 @@ public class Dungeon
             Console.WriteLine("{0}의 공격!", player.Name);
             Thread.Sleep(1000);
             monster[inputNumber-1].Health=battleCalculate(player.Damage, monster[inputNumber-1]); // 공격 계산
-            mosterAtteck(0);
+            if(alldead<stageLevel+2)
+            {
+                mosterAtteck(0);
+            }
             break;
 
             case 2: // 방어하기
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 방어!", player.Name);
             Thread.Sleep(1000);
-            mosterAtteck(1);
+            if(alldead<stageLevel+2)
+            {
+                mosterAtteck(1);
+            }
             break;
 
             case 3:  // 스킬 사용하기
@@ -139,6 +143,7 @@ public class Dungeon
             Thread.Sleep(1000);
             Console.WriteLine("{0}의 {1}!", player.Name, player.Skills[inputNumber-1].Name);
 /////////////////////////
+            player.Mp -=player.Skills[inputNumber-1].MpConsumption;
             if(player.Skills[inputNumber-1].DamageScale<=0) // 스킬 사용하기(힐이면)
             {
                 Console.WriteLine("{0}  {1} -> {2}", player.Name, player.Health, player.Health+(int)(player.MaxHealth/player.Skills[inputNumber-1].RecoveryScale/100));
@@ -184,7 +189,10 @@ public class Dungeon
             }
 //////////////////////////////////////////////
             Thread.Sleep(1000);
-            mosterAtteck(0);
+            if(alldead<stageLevel+2)
+            {
+                mosterAtteck(0);
+            }
             break;
 
             case 4: // 아이템 보기
@@ -214,7 +222,7 @@ public class Dungeon
             {
                 if(!monster[i].IsDead)
                 {
-                    if(typs==0)
+                    if(typs==1)
                     {
                         if(monster[i].Damage<=player.Defense)
                         {
