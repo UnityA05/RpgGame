@@ -54,6 +54,7 @@ public class Dungeon
             Console.WriteLine("You Win!");
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
             Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job, player.Name, beforeHp,player.Health);
+            dungeonCompensation();
             stageLevel++;
             Console.WriteLine();
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
@@ -183,11 +184,25 @@ public class Dungeon
                 player.Mp -=player.Skills[inputNumber-1].MpConsumption;
                 if(player.Skills[inputNumber-1].Name.Equals("더블 스트라이크")) // 랜덤 공격
                 {
+                    int yesAttck = 0;
+                    bool[] monbool = new bool[monster.Length];
+                    for(int i =0; i<monbool.Length;i++){monbool[i]=monster[i].IsDead;}
+                    foreach(bool j in monbool)
+                    {
+                        if(j){yesAttck++;}
+                    }
+                    if(yesAttck>=monster.Length){break;}
                     for(int i=0;i<player.Skills[inputNumber-1].TargetCount;i++)
                     {
                         int random = randomObj.Next(monster.Length);
                         if(monster[random].IsDead)
                         {
+                            for(int j =0; j<monbool.Length;j++){monbool[i]=monster[i].IsDead;}
+                            foreach(bool j in monbool)
+                            {
+                            if(j){yesAttck++;}
+                            }
+                            if(yesAttck>=monster.Length){break;}
                             i--;
                         }
                         else
@@ -338,6 +353,42 @@ public class Dungeon
         Console.WriteLine();
         Thread.Sleep(1000);
         return character.Health;
+    }
+
+    public void dungeonCompensation() // 보상클래스
+    {
+            int getGold =0;
+            int ex=0;
+            int levels = player.level;
+
+            for(int i = 0; i<monster.Length; i++)
+            {
+                switch(monster[i].Name)
+                {
+                    case"미니언":
+                    getGold+=200;
+                    ex+=5;
+                    break;
+                    case"공허충":
+                    getGold+=400;
+                    ex+=10;
+                    break;
+                    case"대포미니언":
+                    getGold+=600;
+                    ex+=15;
+                    break;
+                }
+            }
+
+            Console.WriteLine("Gold +{0}!",getGold);
+            player.Gold+=getGold;
+            Console.WriteLine("Ex +{0}!",ex);
+            player.Experience+=ex;
+            
+            if(player.TryLevelUP())
+            {
+                Console.WriteLine("레벨업! {0} -> {1}", levels, player.level);
+            }
     }
 
     public void worngInput((int Left, int Top) currentCursor, int min, int max) // 입력보기
