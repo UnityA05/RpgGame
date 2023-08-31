@@ -259,6 +259,7 @@ public class Dungeon
             Console.WriteLine("You Lose");
             player.Health=player.MaxHealth;
             player.Mp=player.MaxMp;
+            player.IsDead=false;
             Console.WriteLine();
             inputNumber=0;
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
