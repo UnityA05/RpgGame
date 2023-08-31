@@ -3,7 +3,7 @@ using System.Runtime.ExceptionServices;
 /// <summary>
 /// 플레이어를 생성합니다. 아무 값도 입력하지 않을 시 디폴트(Deprived직업의 Chad)가 생성됩니다.
 /// 모든 값을(이름, 체력, 대미지, 방어력, 직업, 레벨, 골드, 마나, 크리티컬 확률, 회피율 순)으로 설정이 가능합니다.
-/// 또한 이름과 직업을 넘길시 그에 맞는 값을 알아서 설정해 줍니다. 예시 : Player("Chad", "Wizard");
+/// 또한 이름과 직업을 넘길시 그에 맞는 값을 알아서 설정해 줍니다. 예시 : Player("Chad", "법사");
 /// 설정된 직업 : Warrior, Wizard, Thief, Archer, Deprived 단 잘못된 값을 입력시 자동으로 Deprived으로 설정됩니다.
 /// 회피율과 크리티컬확률은 float으로 선언되어 있으며 %값입니다. 에시 : AvoidanceRate = 10f -> 10%입니다.
 /// </summary>
@@ -44,25 +44,25 @@ public class Player : Character
     {
         MyInventory = new Inventory();
         Skills = new List<Skill>();
-        if (_job == "Wizard")
+        if (_job == "법사")
         {
             job = new Wizard();
             Skills.Add(new Heal());
             Skills.Add(new EnergyBolthot());
         }
-        else if (_job == "Thief")
+        else if (_job == "도적")
         {
             job = new Thief();
             Skills.Add(new AlphaStrike());
             Skills.Add(new LuckySeven());
         }
-        else if (_job == "Archer")
+        else if (_job == "궁수")
         {
             job = new Archer();
             Skills.Add(new AlphaStrike());
             Skills.Add(new doubleShot());
         }
-        else if (_job == "Warrior")
+        else if (_job == "전사")
         {
             job = new Warrior();
             Skills.Add(new AlphaStrike());
@@ -110,25 +110,25 @@ public class Player : Character
     {
         MyInventory = new Inventory();
         Skills = new List<Skill>();
-        if (_job == "Wizard")
+        if (_job == "법사")
         {
             job = new Wizard();
             Skills.Add(new Heal());
             Skills.Add(new EnergyBolthot());
         }
-        else if (_job == "Thief")
+        else if (_job == "도적")
         {
             job = new Thief();
             Skills.Add(new AlphaStrike());
             Skills.Add(new LuckySeven());
         }
-        else if (_job == "Archer")
+        else if (_job == "궁수")
         {
             job = new Archer();
             Skills.Add(new AlphaStrike());
             Skills.Add(new doubleShot());
         }
-        else if (_job == "Warrior")
+        else if (_job == "전사")
         {
             job = new Warrior();
             Skills.Add(new AlphaStrike());

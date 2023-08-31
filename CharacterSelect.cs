@@ -131,13 +131,13 @@ public static class CharacterSelect
 		switch (inputNumber)
 		{
 			case 1:
-				return "Warrior";
+				return "전사";
 			case 2:
-				return "Wizard";
+				return "법사";
 			case 3:
-				return "Archer";
+				return "궁수";
 			default: // case 4
-				return "Thief";
+				return "도적";
 		}
 	}
 }
