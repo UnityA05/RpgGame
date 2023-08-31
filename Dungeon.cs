@@ -44,7 +44,7 @@ public class Dungeon
         }
         Console.WriteLine();
 		Console.WriteLine("[내정보]");
-        Console.WriteLine("Lv.{0} {1} ({2}) HP {3}",player.level, player.job, player.Name, player.Health);
+        Console.WriteLine("Lv.{0} {1} ({2}) HP {3}",player.level, player.job.Name, player.Name, player.Health);
         Console.WriteLine();
 
         if(alldead==(stageLevel+2)) // 승리 판단
@@ -52,7 +52,7 @@ public class Dungeon
             Console.Clear();
             Console.WriteLine("You Win!");
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
-            Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job, player.Name, beforeHp,player.Health);
+            Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job.Name, player.Name, beforeHp,player.Health);
             dungeonCompensation();
             stageLevel++;
             Console.WriteLine();
