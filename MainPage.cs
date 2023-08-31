@@ -24,7 +24,7 @@ public static class MainPage
 			ConsoleUI.Write(ConsoleColor.DarkRed, "1");
 			Console.WriteLine(". 캐릭터 선택");
 			ConsoleUI.Write(ConsoleColor.DarkRed, "0");
-			Console.WriteLine(". 뒤로 가기\n");
+			Console.WriteLine(". 게임 종료\n");
 
 			Console.WriteLine("원하시는 행동을 입력해주세요.");
 			ConsoleUI.Write(ConsoleColor.Yellow, ">> ");

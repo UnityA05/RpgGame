@@ -16,7 +16,7 @@ public class Warrior : Job
 
     public Warrior()
     {
-        Name = "Warrior";
+        Name = "전사";
         AdditionalHp = 50;
         AdditionalATK = 10;
         AdditionalDEF = 5;
@@ -49,7 +49,7 @@ public class Wizard : Job
     public float AvoidanceRatePerLevel { get; set; }
     public Wizard()
     {
-        Name = "Wizard";
+        Name = "법사";
         AdditionalHp = 0;
         AdditionalATK = 15;
         AdditionalDEF = 0;
@@ -81,7 +81,7 @@ public class Thief : Job
     public float AvoidanceRatePerLevel { get; set; }
     public Thief()
     {
-        Name = "Thief";
+        Name = "도적";
         AdditionalHp = 10;
         AdditionalATK = 5;
         AdditionalDEF = 0;
@@ -114,7 +114,7 @@ public class Archer : Job
     public float AvoidanceRatePerLevel { get; set; }
     public Archer()
     {
-        Name = "Archer";
+        Name = "궁수";
         AdditionalHp = 0;
         AdditionalATK = 10;
         AdditionalDEF = 0;
