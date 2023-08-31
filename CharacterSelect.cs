@@ -19,8 +19,13 @@ public static class CharacterSelect
 				else
 					Console.WriteLine(". E M P T Y   S L O T");
 			}
-			ConsoleUI.Write(ConsoleColor.DarkRed, "\n4");
-			Console.WriteLine(". 캐릭터 생성");
+
+			Console.WriteLine();
+			if (players.Count < 3)
+			{
+				ConsoleUI.Write(ConsoleColor.DarkRed, "4");
+				Console.WriteLine(". 캐릭터 생성");
+			}
 			ConsoleUI.Write(ConsoleColor.DarkRed, "0");
 			Console.WriteLine(". 뒤로 가기\n");
 
@@ -56,7 +61,8 @@ public static class CharacterSelect
 					MainPage.InMainPage();
 					break;
 				case 4:
-					MakeNewCharacter();
+					if (players.Count < 3)
+						MakeNewCharacter();
 					break;
 			}
 		}
