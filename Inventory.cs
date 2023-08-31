@@ -137,29 +137,21 @@ public class Inventory
     public void DisplayUse()
     {
         Console.Clear();
-        List<Item> potions = new List<Item>();
+        
         Console.WriteLine("인벤토리-포션사용");
-
         Console.WriteLine("보유 중인 포션을 사용할 수 있습니다.");
         Console.WriteLine();
         Console.WriteLine("[포션 목록]");
 
-        foreach (Item pot in playerInven)
-        {
-            if (pot.GetType() == typeof(Item.Potion))
-            {
-                potions.Add(pot);
-            }
-        }
-
-        PrintPotion(potions);
+        int[] indexP = PrintUse();
 
         Console.WriteLine();
         ConsoleUI.Write(ConsoleColor.DarkRed, "0");
         Console.WriteLine(". 나가기");
         ConsoleUI.Write(ConsoleColor.DarkRed, "1~");
         Console.WriteLine(". 사용");
-        Console.WriteLine();
+        Console.WriteLine("원하시는 행동을 입력해주세요.");
+        ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
 
         var currentCursor = Console.GetCursorPosition();
         int inputNumber = 0;
@@ -168,7 +160,7 @@ public class Inventory
         {
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
-                if (inputNumber >= 0 && inputNumber <= potions.Count())
+                if (inputNumber >= 0 && inputNumber <= indexP.Length)
                     break;
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
@@ -185,9 +177,8 @@ public class Inventory
         }
         else
         {
-            int index = playerInven.FindIndex(x => x.item_Name.Equals(potions[inputNumber - 1].item_Name));
+            int index = indexP[inputNumber - 1];
             InvenUse(playerInven[index]);
-            potions.Clear();
             DisplayInven();
         }
     }
@@ -415,52 +406,61 @@ public class Inventory
             currentIndex++;
         }
     }
-    private void PrintPotion(List<Item> potions)
+    private int[] PrintUse()
     {
+        int[] potionIndex = new int[10];
+        int currentPotion = 0;
         int currentIndex = 0;
-        while (currentIndex < potions.Count())
+        while (currentIndex < playerInven.Count())
         {
-            string InvenStr_Name = "            |";
-            string InvenStr_Effect = "                    |";
-            string InvenStr_Explain = "                                                  |";
-
-            string Replace_Name = string.Empty;
-            string Replace_Effect = string.Empty;
-            string Replace_Explain = string.Empty;
-
-            //삽입될 만큼 정렬 문자열에서 빈칸 지우기
-            int nameLength = potions[currentIndex].item_Name.Count();
-            Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                        .Insert(0, potions[currentIndex].item_Name);
-
-            if (playerInven[currentIndex].item_Mp > 0)
+            if (playerInven[currentIndex].GetType() == typeof(Item.Potion))
             {
-                //부패 물약
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_Mp) + 8;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
-            }
-            else
-            {
-                //체력 물약
-                int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;
-                Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
-                
-            }
+                potionIndex[currentPotion] = currentIndex;
 
-            int explainLength = potions[currentIndex].item_Discription.Length;
-            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                              .Insert(0, potions[currentIndex].item_Discription);
+                string InvenStr_Name = "            |";
+                string InvenStr_Effect = "                    |";
+                string InvenStr_Explain = "                                                  |";
 
-            ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
-            Console.Write("- ");
-            Console.Write(Replace_Name);
-            Console.Write(Replace_Effect);
-            Console.Write(Replace_Explain);
-            Console.WriteLine();
+                string Replace_Name = string.Empty;
+                string Replace_Effect = string.Empty;
+                string Replace_Explain = string.Empty;
+
+                //삽입될 만큼 정렬 문자열에서 빈칸 지우기
+                int nameLength = playerInven[currentIndex].item_Name.Count();
+                Replace_Name = InvenStr_Name.Remove(0, nameLength)
+                                            .Insert(0, playerInven[currentIndex].item_Name);
+
+                if (playerInven[currentIndex].item_Mp > 0)
+                {
+                    //부패 물약
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_Mp) + 9;
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + " 마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                }
+                else
+                {
+                    //체력 물약
+                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;
+                    Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
+                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                }
+
+                int explainLength = playerInven[currentIndex].item_Discription.Length;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, playerInven[currentIndex].item_Discription);
+
+                ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentPotion + 1));
+                Console.Write("- ");
+                Console.Write(Replace_Name);
+                Console.Write(Replace_Effect);
+                Console.Write(Replace_Explain);
+                Console.WriteLine();
+                currentPotion++;
+            }
             currentIndex++;
         }
+
+        return potionIndex;
     }
     private void PrintEquip(List<Item> items)
     {

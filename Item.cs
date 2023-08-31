@@ -13,7 +13,7 @@ public class Item
     public string item_Job { get; set; }
     public Item()
     {
-
+        
     }
     public class Weapon : Item
     {
