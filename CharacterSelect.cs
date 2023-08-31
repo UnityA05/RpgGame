@@ -58,12 +58,13 @@ public static class CharacterSelect
 					if (inputNumber > players.Count)
 						break ;
 					Program.defaultPlayer = Program.playerList[inputNumber - 1];
-					MainPage.InMainPage();
+                    Program.defaultPlayer.MyInventory.SetStartingInven();
+                    MainPage.InMainPage();
 					break;
 				case 4:
 					if (players.Count < 3)
 						MakeNewCharacter();
-					break;
+                    break;
 			}
 		}
 	}

@@ -59,7 +59,7 @@ public static class MainPage
 
 	public static void InMainPage()
 	{
-		while (true)
+        while (true)
 		{
 			Console.Clear();
 			Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");

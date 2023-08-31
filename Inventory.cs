@@ -6,15 +6,46 @@ using static Item;
 
 public class Inventory
 {
-    public static List<Item> playerInven { get; set; } = new List<Item>(10);
+    public List<Item> playerInven = new List<Item>(10);
     //아이템 리스트에서 장착중인 인덱스 번호들
-    public static int exArmorNum = -1;
-    public static int exWeaponNum = -1;
-    public static int exAccessNum = -1;
+    public int exArmorNum = -1;
+    public int exWeaponNum = -1;
+    public int exAccessNum = -1;
+    public bool didYouHave = false;
     public Inventory()
     {
-        playerInven.Add(Program.itemMake.colthArmor);
-        playerInven.Add(Program.itemMake.longSword);
+
+    }
+    public void SetStartingInven()
+    {
+        if(Program.defaultPlayer.MyInventory.didYouHave == true)
+        {
+
+        }
+        else
+        {
+            if (Program.defaultPlayer.job.Name == "전사")
+            {
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.colthArmor);
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.bfSword);
+            }
+            else if (Program.defaultPlayer.job.Name == "법사")
+            {
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.colthArmor);
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.needlessRod);
+            }
+            else if (Program.defaultPlayer.job.Name == "궁수")
+            {
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.colthArmor);
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.recurveBow);
+            }
+            else if (Program.defaultPlayer.job.Name == "도적")
+            {
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.colthArmor);
+                Program.defaultPlayer.MyInventory.playerInven.Add(Program.itemMake.dagger);
+            }
+            Program.defaultPlayer.MyInventory.didYouHave = true;
+        }
     }
     public void DisplayInven()
     {
@@ -119,9 +150,9 @@ public class Inventory
         }
         else
         {
-            if (playerInven[wearableIndex[inputNumber - 1]].GetType() == typeof(Item.Weapon))
+            if (Program.defaultPlayer.MyInventory.playerInven[wearableIndex[inputNumber - 1]].GetType() == typeof(Item.Weapon))
             {
-                if (playerInven[wearableIndex[inputNumber - 1]].item_Job == Program.defaultPlayer.job.Name)
+                if (Program.defaultPlayer.MyInventory.playerInven[wearableIndex[inputNumber - 1]].item_Job == Program.defaultPlayer.job.Name)
                 {
                     Equip(wearableIndex[inputNumber - 1]);
                     //wearableIndex. reset
@@ -187,13 +218,13 @@ public class Inventory
         else
         {
             int index = indexP[inputNumber - 1];
-            InvenUse(playerInven[index]);
+            InvenUse(Program.defaultPlayer.MyInventory.playerInven[index]);
             DisplayInven();
         }
     }
     public static void InvenAdd(Item item)
     {
-        playerInven.Add(item);
+        Program.defaultPlayer.MyInventory.playerInven.Add(item);
     }
     public void InvenUse(Item item)
     {
@@ -210,101 +241,101 @@ public class Inventory
         {
             Program.defaultPlayer.Mp = Program.defaultPlayer.MaxMp;
         }
-        playerInven.Remove(item);
+        Program.defaultPlayer.MyInventory.playerInven.Remove(item);
     }
     public void Equip(int i)
     {
-        if (i == exAccessNum || i == exArmorNum || i == exWeaponNum)    //장착한 장비라면
+        if (i == Program.defaultPlayer.MyInventory.exAccessNum || i == Program.defaultPlayer.MyInventory.exArmorNum || i == Program.defaultPlayer.MyInventory.exWeaponNum)    //장착한 장비라면
         {
-            if (playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 해제
+            if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 해제
             {
-                Program.defaultPlayer.Defense -= -playerInven[i].item_Defense;
-                Program.defaultPlayer.CriticalPer -= playerInven[i].item_CriticalPer;
-                exArmorNum = -1;
+                Program.defaultPlayer.Defense -= Program.defaultPlayer.MyInventory.playerInven[i].item_Defense;
+                Program.defaultPlayer.CriticalPer -= Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer;
+                Program.defaultPlayer.MyInventory.exArmorNum = -1;
             }
-            else if (playerInven[i].GetType() == typeof(Item.Weapon))  //무기 해제
+            else if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Weapon))  //무기 해제
             {
-                Program.defaultPlayer.Damage -= playerInven[i].item_Damage;
-                Program.defaultPlayer.AvoidanceRate -= playerInven[i].item_AvoidanceRate;
-                exWeaponNum = -1;
+                Program.defaultPlayer.Damage -= Program.defaultPlayer.MyInventory.playerInven[i].item_Damage;
+                Program.defaultPlayer.AvoidanceRate -= Program.defaultPlayer.MyInventory.playerInven[i].item_AvoidanceRate;
+                Program.defaultPlayer.MyInventory.exWeaponNum = -1;
             }
-            else if (playerInven[i].GetType() == typeof(Item.Accessories))
+            else if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Accessories))
             {
-                Program.defaultPlayer.Health -= playerInven[i].item_Health;
-                Program.defaultPlayer.Mp -= playerInven[i].item_Mp;
-                Program.defaultPlayer.CriticalPer -= playerInven[i].item_CriticalPer;
-                exAccessNum = -1;
+                Program.defaultPlayer.Health -= Program.defaultPlayer.MyInventory.playerInven[i].item_Health;
+                Program.defaultPlayer.Mp -= Program.defaultPlayer.MyInventory.playerInven[i].item_Mp;
+                Program.defaultPlayer.CriticalPer -= Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer;
+                Program.defaultPlayer.MyInventory.exAccessNum = -1;
             }
         }
         else
         {
-            if (playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 장착
+            if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Armor))    //갑옷 장착
             {
-                if (exArmorNum == -1)    //기존 장착한 장비가 없음.
+                if (Program.defaultPlayer.MyInventory.exArmorNum == -1)    //기존 장착한 장비가 없음.
                 {
-                    Program.defaultPlayer.Defense += playerInven[i].item_Defense;
-                    Program.defaultPlayer.CriticalPer += playerInven[i].item_CriticalPer;
-                    exArmorNum = i;
+                    Program.defaultPlayer.Defense += Program.defaultPlayer.MyInventory.playerInven[i].item_Defense;
+                    Program.defaultPlayer.CriticalPer += Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer;
+                    Program.defaultPlayer.MyInventory.exArmorNum = i;
                 }
                 else                    //기존 장착한 장비가 있음.
                 {
-                    Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - playerInven[exArmorNum].item_Defense + playerInven[i].item_Defense;
-                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer - playerInven[exArmorNum].item_CriticalPer + playerInven[i].item_CriticalPer;
-                    exArmorNum = i;
+                    Program.defaultPlayer.Defense = Program.defaultPlayer.Defense - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exArmorNum].item_Defense + Program.defaultPlayer.MyInventory.playerInven[i].item_Defense;
+                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exArmorNum].item_CriticalPer + Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer;
+                    Program.defaultPlayer.MyInventory.exArmorNum = i;
                 }
             }
-            else if (playerInven[i].GetType() == typeof(Item.Weapon))   //무기 장착
+            else if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Weapon))   //무기 장착
             {
-                if (exWeaponNum == -1)
+                if (Program.defaultPlayer.MyInventory.exWeaponNum == -1)
                 {
-                    Program.defaultPlayer.Damage += playerInven[i].item_Damage;
-                    Program.defaultPlayer.AvoidanceRate += playerInven[i].item_AvoidanceRate;
-                    exWeaponNum = i;
+                    Program.defaultPlayer.Damage += Program.defaultPlayer.MyInventory.playerInven[i].item_Damage;
+                    Program.defaultPlayer.AvoidanceRate += Program.defaultPlayer.MyInventory.playerInven[i].item_AvoidanceRate;
+                    Program.defaultPlayer.MyInventory.exWeaponNum = i;
                 }
                 else
                 {
-                    Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - playerInven[exWeaponNum].item_Damage + playerInven[i].item_Damage;
-                    Program.defaultPlayer.AvoidanceRate = Program.defaultPlayer.AvoidanceRate - playerInven[exWeaponNum].item_AvoidanceRate + playerInven[i].item_AvoidanceRate;
-                    exWeaponNum = i;
+                    Program.defaultPlayer.Damage = Program.defaultPlayer.Damage - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exWeaponNum].item_Damage + Program.defaultPlayer.MyInventory.playerInven[i].item_Damage;
+                    Program.defaultPlayer.AvoidanceRate = Program.defaultPlayer.AvoidanceRate - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exWeaponNum].item_AvoidanceRate + Program.defaultPlayer.MyInventory.playerInven[i].item_AvoidanceRate;
+                    Program.defaultPlayer.MyInventory.exWeaponNum = i;
                 }
             }
-            else if (playerInven[i].GetType() == typeof(Item.Accessories))
+            else if (Program.defaultPlayer.MyInventory.playerInven[i].GetType() == typeof(Item.Accessories))
             {
-                if (exAccessNum == -1)
+                if (Program.defaultPlayer.MyInventory.exAccessNum == -1)
                 {
-                    Program.defaultPlayer.Health += playerInven[i].item_Health;
-                    Program.defaultPlayer.Mp += playerInven[i].item_Mp;
-                    Program.defaultPlayer.CriticalPer += playerInven[i].item_CriticalPer;
-                    exAccessNum = i;
+                    Program.defaultPlayer.Health += Program.defaultPlayer.MyInventory.playerInven[i].item_Health;
+                    Program.defaultPlayer.Mp += Program.defaultPlayer.MyInventory.playerInven[i].item_Mp;
+                    Program.defaultPlayer.CriticalPer += Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer;
+                    Program.defaultPlayer.MyInventory.exAccessNum = i;
                 }
                 else
                 {
-                    Program.defaultPlayer.Health = Program.defaultPlayer.Health + playerInven[i].item_Health - playerInven[exAccessNum].item_Health;
-                    Program.defaultPlayer.Mp = Program.defaultPlayer.Mp + playerInven[i].item_Mp - playerInven[exAccessNum].item_Mp;
-                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer + playerInven[i].item_CriticalPer - playerInven[i].item_CriticalPer;
-                    exAccessNum = i;
+                    Program.defaultPlayer.Health = Program.defaultPlayer.Health + Program.defaultPlayer.MyInventory.playerInven[i].item_Health - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exAccessNum].item_Health;
+                    Program.defaultPlayer.Mp = Program.defaultPlayer.Mp + Program.defaultPlayer.MyInventory.playerInven[i].item_Mp - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exAccessNum].item_Mp;
+                    Program.defaultPlayer.CriticalPer = Program.defaultPlayer.CriticalPer + Program.defaultPlayer.MyInventory.playerInven[i].item_CriticalPer - Program.defaultPlayer.MyInventory.playerInven[Program.defaultPlayer.MyInventory.exAccessNum].item_CriticalPer;
+                    Program.defaultPlayer.MyInventory.exAccessNum = i;
                 }
             }
         }
     }
     public static void ItemRemove(int r)
     {
-        if(r < exAccessNum)
+        if (r < Program.defaultPlayer.MyInventory.exAccessNum)
         {
-            exAccessNum--;
+            Program.defaultPlayer.MyInventory.exAccessNum--;
         }
 
-        if(r < exArmorNum)
+        if (r < Program.defaultPlayer.MyInventory.exArmorNum)
         {
-            exArmorNum--;
+            Program.defaultPlayer.MyInventory.exArmorNum--;
         }
 
-        if(r < exWeaponNum)
+        if (r < Program.defaultPlayer.MyInventory.exWeaponNum)
         {
-            exWeaponNum--;
+            Program.defaultPlayer.MyInventory.exWeaponNum--;
         }
 
-        playerInven.Remove(playerInven[r]);
+        Program.defaultPlayer.MyInventory.playerInven.Remove(Program.defaultPlayer.MyInventory.playerInven[r]);
     }
     public int HowManyDigit(int j)
     {
@@ -322,7 +353,7 @@ public class Inventory
     private void PrintInven()
     {
         int currentIndex = 0;
-        while (currentIndex < playerInven.Count())
+        while (currentIndex < Program.defaultPlayer.MyInventory.playerInven.Count())
         {
             //출력 칸 정렬
             string InvenStr_Name = "            |";
@@ -336,18 +367,19 @@ public class Inventory
             //삽입될 만큼 정렬 문자열에서 빈칸 지우기
             if (currentIndex == exArmorNum || currentIndex == exWeaponNum || currentIndex == exAccessNum)
             {
-                int nameLength = playerInven[currentIndex].item_Name.Count();
+                
+                int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                 Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                            .Insert(0, "[E] " + playerInven[currentIndex].item_Name);
+                                            .Insert(0, "[E] " + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
             }
             else
             {
-                int nameLength = playerInven[currentIndex].item_Name.Count();
+                int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                 Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                            .Insert(0, playerInven[currentIndex].item_Name);
+                                            .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
             }
 
-            if (playerInven[currentIndex].GetType() == typeof(Item.Potion)) //물약이라면
+            if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Potion)) //물약이라면
             {
                 if (playerInven[currentIndex].item_Health > 0 && playerInven[currentIndex].item_Mp == 0)
                 {
@@ -366,25 +398,25 @@ public class Inventory
                 }
 
             }
-            else if (playerInven[currentIndex].GetType() == typeof(Item.Accessories))
+            else if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Accessories))
             {
-                if (playerInven[currentIndex].item_Health > 0)
+                if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health > 0)
                 {
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
+                    int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                                                    .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health));
                 }
-                else if (playerInven[currentIndex].item_Mp > 0)
+                else if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp > 0)
                 {
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
+                    int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                                                    .Insert(0, "마력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp));
                 }
                 else
                 {
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
+                    int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(playerInven[currentIndex].item_CriticalPer));
+                                                    .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer));
                 }
             }
             else
@@ -423,17 +455,17 @@ public class Inventory
                 }
             }
 
-            if (playerInven[currentIndex].GetType() == typeof(Item.Weapon))
+            if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Weapon))
             {
-                int explainLength = playerInven[currentIndex].item_Discription.Length + playerInven[currentIndex].item_Job.Length + 3;
+                int explainLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription.Length + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Job.Length + 3;
                 Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                  .Insert(0, playerInven[currentIndex].item_Discription + " (" + playerInven[currentIndex].item_Job + ")");
+                                                  .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription + " (" + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Job + ")");
             }
             else
             {
-                int explainLength = playerInven[currentIndex].item_Discription.Length;
+                int explainLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription.Length;
                 Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                  .Insert(0, playerInven[currentIndex].item_Discription);
+                                                  .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription);
             }
 
             Console.Write("- ");
@@ -449,9 +481,9 @@ public class Inventory
         int[] potionIndex = new int[10];
         int currentPotion = 0;
         int currentIndex = 0;
-        while (currentIndex < playerInven.Count())
+        while (currentIndex < Program.defaultPlayer.MyInventory.playerInven.Count())
         {
-            if (playerInven[currentIndex].GetType() == typeof(Item.Potion))
+            if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Potion))
             {
                 potionIndex[currentPotion] = currentIndex;
 
@@ -464,28 +496,28 @@ public class Inventory
                 string Replace_Explain = string.Empty;
 
                 //삽입될 만큼 정렬 문자열에서 빈칸 지우기
-                int nameLength = playerInven[currentIndex].item_Name.Count();
+                int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                 Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                            .Insert(0, playerInven[currentIndex].item_Name);
+                                            .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
 
-                if (playerInven[currentIndex].item_Mp > 0)
+                if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp > 0)
                 {
                     //부패 물약
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_Mp) + 9;
+                    int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp) + 9;
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + " 마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                                                    .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + " 마력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp));
                 }
                 else
                 {
                     //체력 물약
-                    int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 6;
+                    int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + 6;
                     Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                    .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                                                    .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health));
                 }
 
-                int explainLength = playerInven[currentIndex].item_Discription.Length;
+                int explainLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription.Length;
                 Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                  .Insert(0, playerInven[currentIndex].item_Discription);
+                                                  .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription);
 
                 ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentPotion + 1));
                 Console.Write("- ");
@@ -502,13 +534,13 @@ public class Inventory
     }
     private int[] PrintEquip()
     {
-        int[] equipArray = new int[10] {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+        int[] equipArray = new int[10] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
         int currentIndex = 0;
         int currentItemNum = 0;
 
-        while (currentIndex < playerInven.Count())
+        while (currentIndex < Program.defaultPlayer.MyInventory.playerInven.Count())
         {
-            if (playerInven[currentIndex].GetType() != typeof(Item.Potion))
+            if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() != typeof(Item.Potion))
             {
                 equipArray[currentItemNum] = currentIndex;
 
@@ -522,84 +554,84 @@ public class Inventory
 
                 if (currentIndex == exArmorNum || currentIndex == exWeaponNum || currentIndex == exAccessNum)
                 {
-                    int nameLength = playerInven[currentIndex].item_Name.Count();
+                    int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                     Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                                .Insert(0, "[E] " + playerInven[currentIndex].item_Name);
+                                                .Insert(0, "[E] " + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
                 }
                 else
                 {
-                    int nameLength = playerInven[currentIndex].item_Name.Count();
+                    int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                     Replace_Name = InvenStr_Name.Remove(0, nameLength)
-                                                .Insert(0, playerInven[currentIndex].item_Name);
+                                                .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
                 }
 
-                if (playerInven[currentIndex].GetType() == typeof(Item.Accessories))
+                if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Accessories))
                 {
-                    if (playerInven[currentIndex].item_Health > 0)
+                    if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health > 0)
                     {
-                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
+                        int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + 4;    // + 6은 문자열 "체력회복 +"
                         Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                        .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health));
+                                                        .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health));
                     }
-                    else if (playerInven[currentIndex].item_Mp > 0)
+                    else if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp > 0)
                     {
-                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
+                        int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp) + 4;    // + 6은 문자열 "체력회복 +"
                         Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                        .Insert(0, "마력 +" + Convert.ToString(playerInven[currentIndex].item_Mp));
+                                                        .Insert(0, "마력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Mp));
                     }
                     else
                     {
-                        int effectLength = HowManyDigit(playerInven[currentIndex].item_Health) + HowManyDigit(playerInven[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
+                        int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer) + 4 + 6;    // + 6은 문자열 "체력회복 +"
                         Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                        .Insert(0, "체력 +" + Convert.ToString(playerInven[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(playerInven[currentIndex].item_CriticalPer));
+                                                        .Insert(0, "체력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Health) + "크리티컬 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer));
                     }
                 }
                 else
                 {
-                    if (playerInven[currentIndex].GetType() == typeof(Item.Armor))
+                    if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Armor))
                     {
                         //armor
-                        if (playerInven[currentIndex].item_CriticalPer > 0)
+                        if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer > 0)
                         {
-                            int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + HowManyDigit(playerInven[currentIndex].item_CriticalPer) + 6 + 7;
+                            int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Defense) + HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer) + 6 + 7;
                             Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                        .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense + " 치명타율 +" + Convert.ToString(playerInven[currentIndex].item_CriticalPer)));
+                                                        .Insert(0, " 방어력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Defense + " 치명타율 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_CriticalPer)));
                         }
                         else
                         {
-                            int effectLength = HowManyDigit(playerInven[currentIndex].item_Defense) + 6;
+                            int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Defense) + 6;
                             Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                            .Insert(0, " 방어력 +" + Convert.ToString(playerInven[currentIndex].item_Defense));
+                                                            .Insert(0, " 방어력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Defense));
                         }
                     }
                     else
                     {
                         //weapon
-                        if (playerInven[currentIndex].item_AvoidanceRate > 0)
+                        if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_AvoidanceRate > 0)
                         {
-                            int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + HowManyDigit(playerInven[currentIndex].item_AvoidanceRate) + 6 + 5;
+                            int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Damage) + HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_AvoidanceRate) + 6 + 5;
                             Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                            .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage) + " 회피 +" + Convert.ToString(playerInven[currentIndex].item_AvoidanceRate));
+                                                            .Insert(0, " 공격력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Damage) + " 회피 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_AvoidanceRate));
                         }
                         else
                         {
-                            int effectLength = HowManyDigit(playerInven[currentIndex].item_Damage) + 6;
+                            int effectLength = HowManyDigit(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Damage) + 6;
                             Replace_Effect = InvenStr_Effect.Remove(0, effectLength)
-                                                            .Insert(0, " 공격력 +" + Convert.ToString(playerInven[currentIndex].item_Damage));
+                                                            .Insert(0, " 공격력 +" + Convert.ToString(Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Damage));
                         }
                     }
 
-                    if (playerInven[currentIndex].GetType() == typeof(Item.Weapon))
+                    if (Program.defaultPlayer.MyInventory.playerInven[currentIndex].GetType() == typeof(Item.Weapon))
                     {
-                        int explainLength = playerInven[currentIndex].item_Discription.Length + playerInven[currentIndex].item_Job.Length + 3;
+                        int explainLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription.Length + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Job.Length + 3;
                         Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                          .Insert(0, playerInven[currentIndex].item_Discription + " (" + playerInven[currentIndex].item_Job + ")");
+                                                          .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription + " (" + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Job + ")");
                     }
                     else
                     {
-                        int explainLength = playerInven[currentIndex].item_Discription.Length;
+                        int explainLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription.Length;
                         Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                                          .Insert(0, playerInven[currentIndex].item_Discription);
+                                                          .Insert(0, Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Discription);
                     }
                 }
                 ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentItemNum + 1));
