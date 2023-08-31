@@ -249,7 +249,7 @@ public class Dungeon
             break;
 
             case 4: // 아이템 보기
-            Program.inventory.DisplayInven();
+            player.MyInventory.DisplayInven();
             break;
         }
         if(player.Health<=0){player.IsDead=true;}
