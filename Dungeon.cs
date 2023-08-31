@@ -8,7 +8,6 @@ public class Dungeon
     dungeon = new Dungeon(plyer); // 플레이어 객체 전달
     dungeon.inDungeon();
     */
-    MainPage mainPage = new MainPage();
     Player player; // 플레이어
     Monster[] monster; // 몬스터들
     int inputNumber = 0; // 입력 번호
