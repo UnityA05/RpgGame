@@ -132,7 +132,7 @@ public static class MainPage
 		Console.WriteLine();
 
 		Console.Write(player.Name);
-		Console.WriteLine($" ( {player.job} )");
+		Console.WriteLine($" ( {player.job.Name} )");
 		
 		Console.Write("공격력 : ");
 		ConsoleUI.Write(ConsoleColor.DarkRed, player.Damage.ToString());

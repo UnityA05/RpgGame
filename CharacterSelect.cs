@@ -15,7 +15,7 @@ public static class CharacterSelect
 			{
 				ConsoleUI.Write(ConsoleColor.DarkRed, $"{index + 1}");
 				if (index + 1 <= players.Count)
-					Console.WriteLine($". {players[index].Name} [ {players[index].job} ]");
+					Console.WriteLine($". {players[index].Name} [ {players[index].job.Name} ]");
 				else
 					Console.WriteLine(". E M P T Y   S L O T");
 			}
