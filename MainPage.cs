@@ -14,11 +14,11 @@ public static class MainPage
 			Console.SetCursorPosition(4, 2);
 			while (loopCount-- > 0)
 			{
-				Thread.Sleep(150);
+				Thread.Sleep(80);
 				Console.Write(introLogo[index++]);
 				Console.Write("  ");
 			}
-			Thread.Sleep(700);
+			Thread.Sleep(500);
 
 			Console.SetCursorPosition(0, 4);
 			ConsoleUI.Write(ConsoleColor.DarkRed, "1");
@@ -59,58 +59,61 @@ public static class MainPage
 
 	public static void InMainPage()
 	{
-		Console.Clear();
-		Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
-		Console.WriteLine("이제 전투를 시작하실 수 있습니다.\n");
-
-		ConsoleUI.Write(ConsoleColor.DarkRed, "1");
-		Console.WriteLine(". 상태 보기");
-		ConsoleUI.Write(ConsoleColor.DarkRed, "2");
-		Console.WriteLine(". 인벤토리");
-		ConsoleUI.Write(ConsoleColor.DarkRed, "3");
-		Console.WriteLine(". 상점 입장");
-		ConsoleUI.Write(ConsoleColor.DarkRed, "4");
-		Console.WriteLine(". 전투 시작");
-		ConsoleUI.Write(ConsoleColor.DarkRed, "0");
-		Console.WriteLine(". 게임 종료\n");
-
-		Console.WriteLine("원하시는 행동을 입력해주세요.");
-		ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
-		var currentCursor = Console.GetCursorPosition();
-		
-		int inputNumber = -1;
 		while (true)
 		{
-			if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
-			{
-				if ((0 <= inputNumber) && (inputNumber <= 4))
-					break ;
-			}
-			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
-			ConsoleUI.Write(ConsoleColor.Red, "잘못된 입력입니다.");
-			Thread.Sleep(1000);
-			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
-			Console.Write("                    ");
-			Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
-		}
+			Console.Clear();
+			Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+			Console.WriteLine("이제 전투를 시작하실 수 있습니다.\n");
 
-		switch (inputNumber)
-		{
-			case 1:
-				Status();
-				break;
-			case 2:
-                Program.defaultPlayer.MyInventory.DisplayInven();
-				break;
-			case 3:
-				Program.shop.DisplayShop();
-				break;
-			case 4:
-				Dungeon dungeon = new Dungeon(Program.defaultPlayer);
-				dungeon.inDungeon();
-				break;
-			case 0:
-				return;
+			ConsoleUI.Write(ConsoleColor.DarkRed, "1");
+			Console.WriteLine(". 상태 보기");
+			ConsoleUI.Write(ConsoleColor.DarkRed, "2");
+			Console.WriteLine(". 인벤토리");
+			ConsoleUI.Write(ConsoleColor.DarkRed, "3");
+			Console.WriteLine(". 상점 입장");
+			ConsoleUI.Write(ConsoleColor.DarkRed, "4");
+			Console.WriteLine(". 전투 시작");
+			ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+			Console.WriteLine(". 게임 종료\n");
+
+			Console.WriteLine("원하시는 행동을 입력해주세요.");
+			ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+			var currentCursor = Console.GetCursorPosition();
+			
+			int inputNumber = -1;
+			while (true)
+			{
+				if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
+				{
+					if ((0 <= inputNumber) && (inputNumber <= 4))
+						break ;
+				}
+				Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+				ConsoleUI.Write(ConsoleColor.Red, "잘못된 입력입니다.");
+				Thread.Sleep(1000);
+				Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+				Console.Write("                    ");
+				Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
+			}
+
+			switch (inputNumber)
+			{
+				case 1:
+					Status();
+					break;
+				case 2:
+					Program.defaultPlayer.MyInventory.DisplayInven();
+					break;
+				case 3:
+					Program.shop.DisplayShop();
+					break;
+				case 4:
+					Dungeon dungeon = new Dungeon(Program.defaultPlayer);
+					dungeon.inDungeon();
+					break;
+				case 0:
+					return;
+			}
 		}
 	}
 
