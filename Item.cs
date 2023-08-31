@@ -17,7 +17,7 @@ public class Item
     }
     public class Weapon : Item
     {
-        public Weapon(string _item_name, int _item_damage, int _item_defense, int _item_Gold, int _item_CriticalPer, int _item_AvoidanceRate, string _item_discription) : base()
+        public Weapon(string _item_name, int _item_damage, int _item_defense, int _item_Gold, int _item_CriticalPer, int _item_AvoidanceRate, string _item_discription, string _item_job) : base()
         {
             item_Name = _item_name;
             item_Damage = _item_damage;
@@ -26,6 +26,7 @@ public class Item
             item_Discription = _item_discription;
             item_CriticalPer = _item_CriticalPer;
             item_AvoidanceRate = _item_AvoidanceRate;
+            item_Job = _item_job;
         }
     }
     public class Armor : Item

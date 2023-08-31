@@ -14,6 +14,8 @@ public class Shop
         shopList.Add(Program.itemMake.longSword);
         shopList.Add(Program.itemMake.dagger);
         shopList.Add(Program.itemMake.bfSword);
+        shopList.Add(Program.itemMake.needlessRod);
+        shopList.Add(Program.itemMake.recurveBow);
 
         shopList.Add(Program.itemMake.HealthPotion);
         shopList.Add(Program.itemMake.corruptingPotion);
@@ -78,7 +80,8 @@ public class Shop
     public void DisplayShopBuy()
     {
         Console.Clear();
-        Console.WriteLine("아이템 구매");
+        Console.WriteLine("상점-아이템 구매");
+        Console.WriteLine();
         Console.WriteLine("[보유 골드]");
         ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(Program.defaultPlayer.Gold));
         Console.WriteLine("G");
@@ -152,10 +155,12 @@ public class Shop
     public void DisplayShopSell()
     {
         Console.Clear();
-        Console.WriteLine("아이템 판매");
+        Console.WriteLine("상점-아이템 판매");
         Console.WriteLine();
+        Console.WriteLine("[보유 골드]");
         ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(Program.defaultPlayer.Gold));
         Console.WriteLine("G");
+        Console.WriteLine();
 
         PrintSellList();
 
@@ -204,9 +209,9 @@ public class Shop
             else
             {
                 Console.WriteLine("판매가 완료되었습니다.");
-                Program.defaultPlayer.Gold += Inventory.playerInven[inputNumber - 1].item_Gold;
+                Program.defaultPlayer.Gold += Inventory.playerInven[inputNumber - 1].item_Gold * 80 / 100;
                 shopList.Add(Inventory.playerInven[inputNumber - 1]);
-                Inventory.playerInven.Remove(Inventory.playerInven[inputNumber - 1]);
+                Inventory.ItemRemove(inputNumber - 1);
                 Thread.Sleep(1000);
                 DisplayShopSell();
             }
@@ -313,9 +318,18 @@ public class Shop
             Replace_Gold = InvenStr_Gold.Remove(0, goldLength)
                                         .Insert(0, "가격 : " + Convert.ToString(shopList[currentIndex].item_Gold) + "G");
 
-            int explainLength = shopList[currentIndex].item_Discription.Length;
-            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                              .Insert(0, shopList[currentIndex].item_Discription);
+            if (shopList[currentIndex].GetType() == typeof(Item.Weapon))
+            {
+                int explainLength = shopList[currentIndex].item_Discription.Length + shopList[currentIndex].item_Job.Length + 3;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, shopList[currentIndex].item_Discription + " (" + shopList[currentIndex].item_Job + ")");
+            }
+            else
+            {
+                int explainLength = shopList[currentIndex].item_Discription.Length;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, shopList[currentIndex].item_Discription);
+            }
 
             ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
             Console.Write("- ");
@@ -446,13 +460,22 @@ public class Shop
                 }
             }
 
-            int goldLength = HowManyDigit(Inventory.playerInven[currentIndex].item_Gold) + 6;
+            int goldLength = HowManyDigit(Inventory.playerInven[currentIndex].item_Gold*80/100) + 6;
             Replace_Gold = InvenStr_Gold.Remove(0, goldLength)
-                                        .Insert(0, "가격 : " + Convert.ToString(Inventory.playerInven[currentIndex].item_Gold) + "G");
+                                        .Insert(0, "가격 : " + Convert.ToString(Inventory.playerInven[currentIndex].item_Gold*80/100) + "G");
 
-            int explainLength = Inventory.playerInven[currentIndex].item_Discription.Length;
-            Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
-                                              .Insert(0, Inventory.playerInven[currentIndex].item_Discription);
+            if (Inventory.playerInven[currentIndex].GetType() == typeof(Item.Weapon))
+            {
+                int explainLength = Inventory.playerInven[currentIndex].item_Discription.Length + Inventory.playerInven[currentIndex].item_Job.Length + 3;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, Inventory.playerInven[currentIndex].item_Discription + " (" + Inventory.playerInven[currentIndex].item_Job + ")");
+            }
+            else
+            {
+                int explainLength = Inventory.playerInven[currentIndex].item_Discription.Length;
+                Replace_Explain = InvenStr_Explain.Remove(0, explainLength)
+                                                  .Insert(0, Inventory.playerInven[currentIndex].item_Discription);
+            }
 
             ConsoleUI.Write(ConsoleColor.DarkRed, Convert.ToString(currentIndex + 1));
             Console.Write("- ");
