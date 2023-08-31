@@ -178,7 +178,7 @@ public class MainPage
 				Status();
 				break;
 			case 2:
-				Program.inventory.DisplayInven();
+                Program.defaultPlayer.MyInventory.DisplayInven();
 				break;
 			case 3:
 				Program.shop.DisplayShop();

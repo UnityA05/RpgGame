@@ -250,7 +250,7 @@ public class Dungeon
             break;
 
             case 4: // 아이템 보기
-            Program.inventory.DisplayInven();
+            player.MyInventory.DisplayInven();
             break;
         }
         if(player.Health<=0){player.IsDead=true;}
@@ -260,6 +260,7 @@ public class Dungeon
             Console.WriteLine("You Lose");
             player.Health=player.MaxHealth;
             player.Mp=player.MaxMp;
+            player.IsDead=false;
             Console.WriteLine();
             inputNumber=0;
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");

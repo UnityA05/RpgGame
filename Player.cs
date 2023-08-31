@@ -24,6 +24,7 @@ public class Player : Character
     public int MaxHealth { get; set; }
     public int MaxMp { get; set; }
     public int Experience { get; set; }
+    public Inventory MyInventory { get; set; }
     /// <summary>
     /// 이름, 체력, 대미지, 방어력, 직업, 레벨, 골드, 마나, 크리티컬 확률, 회피율 순 으로 설정이 가능합니다.
     /// 설정된 직업 : Warrior, Wizard, Thief, Archer, Deprived 단 잘못된 값을 입력시 자동으로 Deprived으로 설정됩니다.
@@ -41,6 +42,7 @@ public class Player : Character
     /// <param name="avoidanceRate"></param>
     public Player(string name, int health, int damage, int defense, string _job, int _level, int gold, int mp, float criticalPer, float avoidanceRate)
     {
+        MyInventory = new Inventory();
         Skills = new List<Skill>();
         if (_job == "Wizard")
         {
@@ -83,6 +85,7 @@ public class Player : Character
     }
     public Player()
     {
+        MyInventory = new Inventory();
         Skills = new List<Skill>();
         job = new Deprived();
         Name = "Chad";
@@ -105,6 +108,7 @@ public class Player : Character
     /// <param name="_job"></param>
     public Player(string name, string _job)
     {
+        MyInventory = new Inventory();
         Skills = new List<Skill>();
         if (_job == "Wizard")
         {
