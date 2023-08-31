@@ -57,6 +57,7 @@ public class Dungeon
             dungeonCompensation();
             stageLevel++;
             Console.WriteLine();
+            inputNumber=0;
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
 		    Console.WriteLine(". 되돌아기기");
             ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
@@ -100,6 +101,7 @@ public class Dungeon
 
     public void battleStage(int s) // 배틀 상태
     {
+        inputNumber=0;
         switch(s)
         {
             case 1: // 공격하기
@@ -127,6 +129,7 @@ public class Dungeon
                 alldead=0;
                 mosterAtteck(0);
             }
+            
             break;
 
             case 2: // 방어하기
@@ -142,6 +145,7 @@ public class Dungeon
                 alldead=0;
                 mosterAtteck(1);
             }
+            
             break;
 
             case 3:  // 스킬 사용하기
@@ -186,12 +190,6 @@ public class Dungeon
                 {
                     int yesAttck = 0;
                     bool[] monbool = new bool[monster.Length];
-                    for(int i =0; i<monbool.Length;i++){monbool[i]=monster[i].IsDead;}
-                    foreach(bool j in monbool)
-                    {
-                        if(j){yesAttck++;}
-                    }
-                    if(yesAttck>=monster.Length){break;}
                     for(int i=0;i<player.Skills[inputNumber-1].TargetCount;i++)
                     {
                         int random = randomObj.Next(monster.Length);
@@ -262,14 +260,24 @@ public class Dungeon
             Console.WriteLine("You Lose");
             player.Health=player.MaxHealth;
             player.Mp=player.MaxMp;
-            return;
+            Console.WriteLine();
+            inputNumber=0;
+            ConsoleUI.Write(ConsoleColor.DarkRed, "0");
+		    Console.WriteLine(". 되돌아기기");
+            ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
+		    var Cursor = Console.GetCursorPosition();
+            worngInput(Cursor,0,0);
+ 		    switch (inputNumber)
+		    {
+			    case 0:
+                //돌아가기
+                return;
+		    }
         }
         else
         {
             inDungeon(); // 되돌아기기
         }
-
-
     }
 
     public void mosterAtteck(int typs)
