@@ -1,4 +1,5 @@
 using SprtaGame;
+using System;
 using System.ComponentModel.Design;
 using System.Data;
 using System.Runtime.InteropServices.JavaScript;
@@ -18,7 +19,7 @@ public class Inventory
     }
     public void SetStartingInven()
     {
-        if(Program.defaultPlayer.MyInventory.didYouHave == true)
+        if (Program.defaultPlayer.MyInventory.didYouHave == true)
         {
 
         }
@@ -200,8 +201,22 @@ public class Inventory
         {
             if (int.TryParse(Console.ReadLine(), out inputNumber) == true)
             {
-                if (inputNumber >= 0 && inputNumber <= indexP.Length)
+                if(inputNumber < 0 && inputNumber > indexP.Length)
+                {
+
+                }
+                else if(Program.defaultPlayer.MyInventory.playerInven[indexP[inputNumber - 1]].GetType() != typeof(Item.Potion))
+                {
+
+                }
+                else if(Program.defaultPlayer.MyInventory.playerInven[indexP[inputNumber - 1]] == default)
+                {
+                    
+                }
+                else
+                {
                     break;
+                }
             }
             Console.SetCursorPosition(currentCursor.Left, currentCursor.Top);
             ConsoleUI.Write(ConsoleColor.Red, "잘못된 입력입니다.");
@@ -220,6 +235,7 @@ public class Inventory
             int index = indexP[inputNumber - 1];
             InvenUse(Program.defaultPlayer.MyInventory.playerInven[index]);
             DisplayInven();
+
         }
     }
     public static void InvenAdd(Item item)
@@ -367,7 +383,7 @@ public class Inventory
             //삽입될 만큼 정렬 문자열에서 빈칸 지우기
             if (currentIndex == exArmorNum || currentIndex == exWeaponNum || currentIndex == exAccessNum)
             {
-                
+
                 int nameLength = Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name.Count();
                 Replace_Name = InvenStr_Name.Remove(0, nameLength)
                                             .Insert(0, "[E] " + Program.defaultPlayer.MyInventory.playerInven[currentIndex].item_Name);
