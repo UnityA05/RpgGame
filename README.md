@@ -7,42 +7,36 @@ git clone https://github.com/UnityA05/RpgGame.git
 cd RpgGame
 dotnet run
 ~~~
-## 3. 초기 설계
+## 3. 파일 및 클래스 분류
+#### 1) Program.cs → MainPage.cs → CharacterSelect.cs
+- 프로그램의 시작. 인트로 페이지와 캐릭터 선택 및 생성 페이지.
+#### 2) Character.cs (Player.cs, Monster.cs)
+- 플레이어블 캐릭터와 출현하는 몬스터의 제작을 위한 인터페이스.
+#### 3) Job.cs (HumanJob.cs, MonsterJob.cs)
+- 캐릭터와 몬스터의 직업에 관한 인터페이스.
+- 캐릭터는 직업(전사, 법사, 궁수, 도적, Deprived-가지지 못한 자), 몬스터는 종류
+#### 4) Skill.cs (HumanSkill.cs, MonsterSkill.cs)
+- 캐릭터와 몬스터의 스킬
+#### 5) Inventory.cs Shop.cs Item.cs ItemCode.cs
+- 게임 내 아이템과 관련된 클래스.
+- 아이템 목록, 각 아이템의 속성 관리(직업별 착용, 부위, 악세서리, 포션), 인벤토리와 상점
+#### 6) Dungeon.cs
+- 몬스터와 전투를 하는 공간.
+- 랜덤한 몬스터가 소환되며 플레이어는 공격, 방어, 스킬 등의 선택지를 사용해 몬스터를 처치하고 보상을 받는다.
+#### 7) ConsoleUI.cs
+- 코드 편의성을 위한 클래스.
 
-필요 클래스
-- MainPage.cs
-    - 이동 메소드## 전투시작, 상태보기, 아이템사용
-- Player.cs
-    - 상태반환
-    - 상태저장
-    - 레벨업
-- Character.cs (interface) ## 플레이어, 몬스터
-    - 레벨, 이름, 직업, 체력, 공격력, 방어력, 골드, MP(스킬 기능 추가할 경우)
-- Make.cs
-- Monster.cs
-    - 상태반환
-    - 상태저장
-- Dungeon.cs
-    - 스테이지(층별→몬스터가 많아진다)
-    - 몬스터생성
-    - 승리판단
-    - 전투요소
-        - 스킬사용 # 플레이어만
-        - 치명타
-        - 회피
-        - 회복기능
-        - 방어 # 방어력에 따라 피해 경감
-        - 보상 - 경험치, 골드, 아이템
-- Inventory.cs ##회복, 장착
-    - 인벤토리 요소 반환
-    - 인벤토리 아이템 추가
-    - 인벤토리 아이템 사용
-    - 아이템 장착
-- Shop.cs
-    - 상점 목록 출력
-    - 상점 구매
-    - 상점 판매
-- ConsoleUI.cs
-    - 출력을 용이하게 (매개변수로 색상,문자열 전달) (precision 지정 → 한글일 경우를 핸들링)
-- Item.cs
-    - 아이템 코드 형식
+
+## 4. 파트 분배
+* 차요한
+  Dungeon.cs
+* 이소이
+  MainPage.cs CharacterSelect.cs
+* 김도현
+  Character.Player.cs
+  Job.cs - HumanJob.cs MonsterJob.cs
+  Skill.cs - HumanSkill.cs MonsterSkill.cs
+* 이하택
+  Inventory.cs Shop.cs Item.cs ItemCode.cs
+
+  
