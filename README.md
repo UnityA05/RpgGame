@@ -31,7 +31,7 @@ dotnet run
 #### 차요한 (팀장)
 * Dungeon.cs, Character.cs, Program.cs, 팀 노션 설명 및 순서도
 #### 이소이
-* MainPage.cs,  CharacterSelect.cs, ConsoleUI.cs, Program.cs, README.md
+* MainPage.cs,  CharacterSelect.cs, ConsoleUI.cs, README.md
 #### 김도현
 * Player.cs Monster.cs Job.cs-(HumanJob.cs MonsterJob.cs) Skill.cs-(HumanSkill.cs MonsterSkill.cs)
 #### 이하택
