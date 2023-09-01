@@ -50,13 +50,14 @@ public class Dungeon
         if(alldead==(stageLevel+2)) // 승리 판단
         {
             Console.Clear();
+            inputNumber=0;
             Console.WriteLine("You Win!");
             Console.WriteLine("던전에서 {0}마리 잡았습니다.",stageLevel+2);
             Console.WriteLine("Lv.{0} {1} ({2}) HP {3} -> HP{4}",player.level, player.job.Name, player.Name, beforeHp,player.Health);
             dungeonCompensation();
             stageLevel++;
             Console.WriteLine();
-            inputNumber=0;
+            
             ConsoleUI.Write(ConsoleColor.DarkRed, "0");
 		    Console.WriteLine(". 되돌아기기");
             ConsoleUI.Write(ConsoleColor.Yellow, ">> ");
@@ -194,6 +195,7 @@ public class Dungeon
                         int random = randomObj.Next(monster.Length);
                         if(monster[random].IsDead)
                         {
+                            yesAttck=0;
                             for(int j =0; j<monbool.Length;j++){monbool[i]=monster[i].IsDead;}
                             foreach(bool j in monbool)
                             {
