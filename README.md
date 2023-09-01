@@ -1,4 +1,14 @@
 # RpgGame
+## 1. 팀 노션
+https://teamsparta.notion.site/05-7d92263c51464846802a02830480b4e4
+## 2. 실행 방법
+~~~C#
+git clone https://github.com/UnityA05/RpgGame.git
+cd RpgGame
+dotnet run
+~~~
+## 3. 초기 설계
+
 필요 클래스
 - MainPage.cs
     - 이동 메소드## 전투시작, 상태보기, 아이템사용
