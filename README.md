@@ -28,15 +28,13 @@ dotnet run
 
 
 ## 4. 파트 분배
-* 차요한
-  Dungeon.cs
-* 이소이
-  MainPage.cs CharacterSelect.cs
-* 김도현
-  Character.Player.cs
-  Job.cs - HumanJob.cs MonsterJob.cs
-  Skill.cs - HumanSkill.cs MonsterSkill.cs
-* 이하택
-  Inventory.cs Shop.cs Item.cs ItemCode.cs
+#### 차요한 (팀장)
+* Dungeon.cs, Character.cs, Program.cs, 팀 노션 설명 및 순서도
+#### 이소이
+* MainPage.cs,  CharacterSelect.cs, ConsoleUI.cs, Program.cs, README.md
+#### 김도현
+* Player.cs Monster.cs Job.cs-(HumanJob.cs MonsterJob.cs) Skill.cs-(HumanSkill.cs MonsterSkill.cs)
+#### 이하택
+* Inventory.cs Shop.cs Item.cs ItemCode.cs
 
   
